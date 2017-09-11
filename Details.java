@@ -99,7 +99,6 @@ public class Details extends AppCompatActivity {
                     {
                         Toast.makeText(Details.this,"error in adding friend", Toast.LENGTH_SHORT ).show();
                     }
-
                 }
 
 
