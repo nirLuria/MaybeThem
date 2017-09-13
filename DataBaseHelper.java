@@ -21,6 +21,9 @@ public class DataBaseHelper extends SQLiteOpenHelper
     public static final String col2= "LAST_NAME";
     public static final String col3= "PHONE_NUMBER";
     public static final String col4= "GENDER";
+    public static final String col5= "HOBBIES";
+    public static final String col6= "RED_LINE";
+
 
 
 
@@ -32,7 +35,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        db.execSQL("Create table "+ TableFriends +" (FIRST_NAME TEXT , LAST_NAME TEXT, PHONE_NUMBER TEXT PRIMARY KEY, GENDER TEXT ) ");
+        db.execSQL("Create table "+ TableFriends +" (FIRST_NAME TEXT , LAST_NAME TEXT, PHONE_NUMBER TEXT PRIMARY KEY, GENDER TEXT, HOBBIES TEXT, RED_LINE TEXT ) ");
         System.out.println("created clean database");
     }
 
@@ -46,7 +49,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
 
     ///////////////////////////////////    WRITE    /////////////////////////////////
 
-    public boolean insertFriend (String firstName, String lastName, String phoneNumber, String gender)
+    public boolean insertFriend (String firstName, String lastName, String phoneNumber, String gender, String hobbies, String redLine)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -61,6 +64,10 @@ public class DataBaseHelper extends SQLiteOpenHelper
         {
             contentValues.put(col4, "woman");
         }
+        contentValues.put(col5, hobbies);
+        contentValues.put(col6, redLine);
+
+
 
         long result = db.insert(TableFriends, null, contentValues);
         if (result==-1)

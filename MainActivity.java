@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity
         new_friend_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent("com.maybethem.maybethem.Adding");
+                Intent intent = new Intent("com.maybethem.maybethem.Details");
                 startActivity(intent);
             }
         });

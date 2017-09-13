@@ -1,29 +1,63 @@
 package com.maybethem.maybethem;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.maybethem.maybethem.friends.Friend;
+
+import java.util.ArrayList;
 
 /**
  * Created by nirlu on 06/09/2017.
  */
 
-public class Details extends AppCompatActivity {
+public class Details extends AppCompatActivity
+{
+
 
     Button submit;
     EditText ageET, firstNameET, lastNameET, phoneNumberET;
     private static RadioGroup radioGroup;
     private static RadioButton radio_choose;
     DataBaseHelper myDb;
+
+
+    //hobbies variables.
+    EditText inputHobbies;
+    String otherHobbies, hobbiesItems;
+    boolean otherHobbiesIsChecked=false;
+    final int HOBBIES_OTHER_INDEX=6;
+    Button mHobbies;
+    TextView mHobbiesItemSelected;
+    String[] hobbiesListItems;
+    ArrayList<Integer> mHobbiesUserItems = new ArrayList<>();
+    boolean[] hobbiesCheckedItems;
+
+    //red line variables.
+    Button mRedLine;
+    TextView mRedLineItemSelected;
+    String[] redLineListItems;
+    ArrayList<Integer> mRedLineUserItems = new ArrayList<>();
+    boolean[] redLineCheckedItems;
+    final int RED_LINE_OTHER_INDEX=7;
+    boolean otherRedLineIsChecked=false;
+    String otherRedLine, redLineItems;
+    EditText inputRedLine;
+
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -35,18 +69,330 @@ public class Details extends AppCompatActivity {
         ageET = (EditText)findViewById(R.id.add_age);
         phoneNumberET = (EditText)findViewById(R.id.add_phone);
         myDb = new DataBaseHelper(this);
+        otherHobbies="";
+
+        mHobbies = (Button)findViewById(R.id.btnHobbies);
+        mRedLine = (Button)findViewById(R.id.btnRedLine);
 
 
-        //     addNewFriendClickListener();
 
+
+
+        redLineOnClickListener();
+        hobbiesOnClickListener();
         submit();
-
+     ///   addNewTask();
 
     }
 
 
+    public void addOtherHobbies()
+    {
+        //create alert dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("הוסף תחומי עניין נוספים: ");
+
+        builder.setMessage("");
+        inputHobbies= new EditText(this);
+        inputHobbies.setText(otherHobbies);
+
+        builder.setView(inputHobbies);
+
+        //set negative button.
+        builder.setNegativeButton("ביטול", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                inputHobbies.setText("");
+                dialogInterface.dismiss();
+            }
+        });
+        //set positive button.
+        builder.setPositiveButton("אישור", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i)
+            {
+                Toast.makeText(Details.this,inputHobbies.getText().toString(), Toast.LENGTH_SHORT ).show();
+                otherHobbies=inputHobbies.getText().toString();
+            }
+        });
+
+
+        final AlertDialog alertDialog= builder.create();
+
+        //show keyboard.
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        alertDialog.show();
+
+    }
+
+    public void hobbiesOnClickListener()
+    {
+
+
+        mHobbiesItemSelected = (TextView)findViewById(R.id.tvHobbiesItemSelected);
+        hobbiesListItems= getResources().getStringArray(R.array.hobbies_item);
+        hobbiesCheckedItems = new boolean[hobbiesListItems.length];
+        mHobbies.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(Details.this);
+                mBuilder.setTitle("תחומי עניין:");
+                mBuilder.setMultiChoiceItems(hobbiesListItems, hobbiesCheckedItems, new DialogInterface.OnMultiChoiceClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position, boolean isChecked)
+                    {
+                        if (isChecked)
+                        {
+                            if (!mHobbiesUserItems.contains(position))
+                            {
+                                mHobbiesUserItems.add(position);
+                            }
+                            //handle "else".
+                            if (position==HOBBIES_OTHER_INDEX)
+                            {
+                                addOtherHobbies();
+                                otherHobbiesIsChecked=true;
+                                //Toast.makeText(Details.this,"אחר...", Toast.LENGTH_SHORT ).show();
+                            }
+                        }
+                        else if (mHobbiesUserItems.contains(position))
+                        {
+                            System.out.println("position is "+position);
+                            mHobbiesUserItems.remove(new Integer(position));
+                            if (position==HOBBIES_OTHER_INDEX)
+                            {
+                                otherHobbiesIsChecked=false;
+                            }
+                        }
+                    }
+                });
+
+                mBuilder.setCancelable(false);
+                mBuilder.setPositiveButton("אישור", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        String item = "";
+
+                        for (int i= 0; i<mHobbiesUserItems.size(); i++)
+                        {
+                            if (!hobbiesListItems[mHobbiesUserItems.get(i)].equals("אחר"))
+                            {
+                                item = item + hobbiesListItems[mHobbiesUserItems.get(i)];
+                                if (i!= mHobbiesUserItems.size()-1)
+                                {
+                                    item = item+", ";
+                                }
+                            }
+
+                        }
+                        mHobbiesItemSelected.setText(item);
+                        hobbiesItems=item;
+
+                        //close the keyboard.
+                        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                    }
+                });
+
+                mBuilder.setNegativeButton("ביטול", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                mBuilder.setNeutralButton("נקה הכל", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for(int i=0; i< hobbiesCheckedItems.length; i++)
+                        {
+                            hobbiesCheckedItems[i] = false;
+                            mHobbiesUserItems.clear();
+                            mHobbiesItemSelected.setText("");
+                            hobbiesItems="";
+
+                        }
+                    }
+                });
+
+                AlertDialog mDAialog = mBuilder.create();
+                mDAialog.show();
+            }
+        });
+    }
+
+    public void addOtherRedLines()
+    {
+        //create alert dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("הוסף קווים אדומים נוספים: ");
+
+        builder.setMessage("");
+        inputRedLine= new EditText(this);
+        inputRedLine.setText(otherRedLine);
+
+        builder.setView(inputRedLine);
+
+        //set negative button.
+        builder.setNegativeButton("ביטול", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                inputRedLine.setText("");
+                dialogInterface.dismiss();
+            }
+        });
+        //set positive button.
+        builder.setPositiveButton("אישור", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i)
+            {
+                Toast.makeText(Details.this,inputRedLine.getText().toString(), Toast.LENGTH_SHORT ).show();
+                otherRedLine=inputRedLine.getText().toString();
+            }
+        });
+
+
+        final AlertDialog alertDialog= builder.create();
+
+        //show keyboard.
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        alertDialog.show();
+
+    }
+
+
+    public void clearAllRedLines()
+    {
+        for(int i=0; i< redLineCheckedItems.length; i++)
+        {
+            redLineCheckedItems[i] = false;
+            mRedLineUserItems.clear();
+            mRedLineItemSelected.setText("");
+            redLineItems="";
+
+        }
+    }
+
+
+    public void clearAllHobbies()
+    {
+        for(int i=0; i< hobbiesCheckedItems.length; i++)
+        {
+            hobbiesCheckedItems[i] = false;
+            mHobbiesUserItems.clear();
+            mHobbiesItemSelected.setText("");
+            hobbiesItems="";
+
+        }
+    }
+
+    public void redLineOnClickListener()
+    {
+
+
+
+
+        mRedLineItemSelected = (TextView)findViewById(R.id.tvRedLineItemSelected);
+        redLineListItems= getResources().getStringArray(R.array.red_line_item);
+        redLineCheckedItems = new boolean[redLineListItems.length];
+        mRedLine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(Details.this);
+                mBuilder.setTitle("קו אדום:");
+                mBuilder.setMultiChoiceItems(redLineListItems, redLineCheckedItems, new DialogInterface.OnMultiChoiceClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position, boolean isChecked)
+                    {
+                        if (isChecked)
+                        {
+                            if (!mRedLineUserItems.contains(position))
+                            {
+                                mRedLineUserItems.add(position);
+                            }
+                            //handle "else".
+                            if (position==RED_LINE_OTHER_INDEX)
+                            {
+                                addOtherRedLines();
+                                otherRedLineIsChecked=true;
+                                //Toast.makeText(Details.this,"אחר...", Toast.LENGTH_SHORT ).show();
+                            }
+                        }
+                        else if (mRedLineUserItems.contains(position))
+                        {
+                            mRedLineUserItems.remove(new Integer(position));
+                            if (position==RED_LINE_OTHER_INDEX)
+                            {
+                                otherRedLineIsChecked=false;
+                            }
+                        }
+                    }
+                });
+
+                mBuilder.setCancelable(false);
+                mBuilder.setPositiveButton("אישור", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        String item = "";
+
+                        for (int i= 0; i<mRedLineUserItems.size(); i++)
+                        {
+                            if (!redLineListItems[mRedLineUserItems.get(i)].equals("אחר"))
+                            {
+                                item = item + redLineListItems[mRedLineUserItems.get(i)];
+                                if (i!= mRedLineUserItems.size()-1)
+                                {
+                                    item = item+", ";
+                                }
+                            }
+
+                        }
+                        mRedLineItemSelected.setText(item);
+                        redLineItems=item;
+
+                        //close the keyboard.
+                        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                    }
+                });
+
+                mBuilder.setNegativeButton("ביטול", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                mBuilder.setNeutralButton("נקה הכל", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for(int i=0; i< redLineCheckedItems.length; i++)
+                        {
+                            redLineCheckedItems[i] = false;
+                            mRedLineUserItems.clear();
+                            mRedLineItemSelected.setText("");
+                            redLineItems="";
+
+                        }
+                    }
+                });
+
+                AlertDialog mDAialog = mBuilder.create();
+                mDAialog.show();
+            }
+        });
+    }
+
+
+
+
     public void submit()
     {
+
 
         submit= (Button) findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener()
@@ -54,6 +400,7 @@ public class Details extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
+
                 radioGroup= (RadioGroup) findViewById(R.id.radioGroup);
                 int selected_id=radioGroup.getCheckedRadioButtonId();
                 radio_choose = (RadioButton) findViewById(selected_id);
@@ -61,6 +408,7 @@ public class Details extends AppCompatActivity {
                 String lastName=lastNameET.getText().toString();
                 String age=ageET.getText().toString();
                 String phoneNumber=phoneNumberET.getText().toString();
+                String hobbies, redLine;
 
                 if (!checkName(firstName))
                 {
@@ -84,8 +432,29 @@ public class Details extends AppCompatActivity {
                 }
                 else
                 {
+
+                    if (otherHobbiesIsChecked)
+                    {
+                        hobbies=otherHobbies+", "+hobbiesItems;
+                    }
+                    else
+                    {
+                        hobbies=hobbiesItems;
+                    }
+                    if (otherRedLineIsChecked)
+                    {
+                        redLine=otherRedLine+", "+redLineItems;
+                    }
+                    else
+                    {
+                        redLine=redLineItems;
+                    }
+
+                    clearAllHobbies();
+                    clearAllRedLines();
+
                     String gender=radio_choose.getText().toString();
-                    boolean isInserted = myDb.insertFriend(firstName, lastName, phoneNumber, gender);
+                    boolean isInserted = myDb.insertFriend(firstName, lastName, phoneNumber, gender, hobbies, redLine);
                     if (isInserted==true)
                     {
                         Toast.makeText(Details.this, gender+", "+firstName+", "+lastName+", "+phoneNumber+" added successfully", Toast.LENGTH_SHORT ).show();
