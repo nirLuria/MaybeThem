@@ -8,17 +8,21 @@ public class Friend
 {
 
     String firstNsame;
-    String lastNsame;
+    String lastName;
     String phoneNumber;
     String gender;
+    String hobbies;
+    String redLine;
 
 
-
-    public Friend(String firstNsame, String lastNsame, String phoneNumber, String gender) {
+    public Friend(String firstNsame, String lastName, String phoneNumber, String gender, String hobbies, String redLine)
+    {
         this.firstNsame = firstNsame;
-        this.lastNsame = lastNsame;
+        this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
+        this.hobbies = hobbies;
+        this.redLine = redLine;
     }
 
     public String getFirstNsame() {
@@ -30,11 +34,11 @@ public class Friend
     }
 
     public String getLastNsame() {
-        return lastNsame;
+        return lastName;
     }
 
     public void setLastNsame(String lastNsame) {
-        this.lastNsame = lastNsame;
+        this.lastName = lastNsame;
     }
 
     public String getPhoneNumber() {
@@ -53,9 +57,18 @@ public class Friend
         this.gender = gender;
     }
 
+    public String getHobbies() {return hobbies;}
+
+    public void setHobbies(String hobbies) {this.hobbies = hobbies;}
+
+    public String getRedLine() {return redLine;}
+
+    public void setRedLine(String redLine) {this.redLine = redLine;}
+
+
     public void printFriend()
     {
-        System.out.println("My details are: "+firstNsame+", "+lastNsame);
+        System.out.println("--------------------------------------My details are: "+firstNsame+", "+lastName+", "+phoneNumber+", "+gender+", "+hobbies+", "+redLine);
     }
 
 

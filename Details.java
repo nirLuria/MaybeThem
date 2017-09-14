@@ -271,8 +271,8 @@ public class Details extends AppCompatActivity
             mRedLineUserItems.clear();
             mRedLineItemSelected.setText("");
             redLineItems="";
-
         }
+        otherRedLine="";
     }
 
 
@@ -284,8 +284,8 @@ public class Details extends AppCompatActivity
             mHobbiesUserItems.clear();
             mHobbiesItemSelected.setText("");
             hobbiesItems="";
-
         }
+        otherHobbies="";
     }
 
     public void redLineOnClickListener()

@@ -1,8 +1,9 @@
-package com.maybethem.maybethem;
+package com.maybethem.maybethem.friends;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.maybethem.maybethem.R;
 import com.maybethem.maybethem.friends.AbstractFriends;
 
 /**
@@ -14,7 +15,6 @@ public class Women extends AbstractFriends
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.conteiner_activity);
 
         title=(TextView) findViewById(R.id.title);
         title.setText("girls");

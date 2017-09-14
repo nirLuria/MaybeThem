@@ -32,7 +32,7 @@ public class ContainerChoose extends AppCompatActivity
         go_to_conteiner_men.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent("com.maybethem.maybethem.Men");
+                Intent intent = new Intent("com.maybethem.maybethem.friends.Men");
                 startActivity(intent);
             }
         });
@@ -44,7 +44,7 @@ public class ContainerChoose extends AppCompatActivity
         go_to_conteiner_women.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent("com.maybethem.maybethem.Women");
+                Intent intent = new Intent("com.maybethem.maybethem.friends.Women");
                 startActivity(intent);
             }
         });
