@@ -19,15 +19,26 @@ import java.util.ArrayList;
 
 public class Men extends AbstractFriends
 {
+    ViewPager  viewPager;
+    CustomSwipeAdapter71 adapter;
+
 
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
+        viewPager = (ViewPager)findViewById(R.id.viewPager);
+        adapter = new CustomSwipeAdapter71(this);
+        viewPager.setAdapter(adapter);
+
+
         title=(TextView) findViewById(R.id.title);
         title.setText("boys");
 
         print("man");
+
+
+        ///implement
 
     //    System.out.println("count "+getMyFriendsCount("man"));
 
