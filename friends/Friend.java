@@ -10,36 +10,42 @@ public class Friend
     String firstNsame;
     String lastName;
     String phoneNumber;
+    int age;
     String gender;
     String hobbies;
     String redLine;
 
 
-    public Friend(String firstNsame, String lastName, String phoneNumber, String gender, String hobbies, String redLine)
+    public Friend(String firstNsame, String lastName, int age, String phoneNumber, String gender, String hobbies, String redLine)
     {
         this.firstNsame = firstNsame;
         this.lastName = lastName;
+        this.age = age;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
         this.hobbies = hobbies;
         this.redLine = redLine;
     }
 
-    public String getFirstNsame() {
+    public String getFirstName() {
         return firstNsame;
     }
 
-    public void setFirstNsame(String firstNsame) {
+    public void setFirstName(String firstNsame) {
         this.firstNsame = firstNsame;
     }
 
-    public String getLastNsame() {
+    public String getLastName() {
         return lastName;
     }
 
     public void setLastNsame(String lastNsame) {
         this.lastName = lastNsame;
     }
+
+    public int getAge() {return age;}
+
+    public void setAge(int age) {this.age = age;}
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -69,6 +75,11 @@ public class Friend
     public void printFriend()
     {
         System.out.println("--------------------------------------My details are: "+firstNsame+", "+lastName+", "+phoneNumber+", "+gender+", "+hobbies+", "+redLine);
+    }
+
+    public String getPrintFriend()
+    {
+        return "--------------------------------------My details are: "+firstNsame+", "+lastName+", "+phoneNumber+", "+gender+", "+hobbies+", "+redLine;
     }
 
 

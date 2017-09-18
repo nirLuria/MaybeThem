@@ -4,13 +4,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.maybethem.maybethem.DataBaseHelper;
 import com.maybethem.maybethem.R;
-import com.maybethem.maybethem.swipe.SwipeAdapter;
+import com.maybethem.maybethem.swipe.CustomSwipeAdapter71;
 
 import java.util.ArrayList;
 
@@ -22,7 +20,7 @@ public abstract class AbstractFriends extends FragmentActivity
 {
     protected TextView title;
     DataBaseHelper myDb;
-    ViewPager viewPager;
+
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -32,14 +30,10 @@ public abstract class AbstractFriends extends FragmentActivity
         myDb = new DataBaseHelper(this);
 
 
-        viewPager= (ViewPager) findViewById(R.id.viewPager);
-        SwipeAdapter swipeAdapter = new SwipeAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(swipeAdapter);
-
 
     }
 
-
+/*
     public int getMyFriendsCount(String myGender)
     {
         int count=0;
@@ -57,7 +51,7 @@ public abstract class AbstractFriends extends FragmentActivity
         }
         return count;
     }
-
+*/
 
     public ArrayList getMyFriends(String myGender)
     {
@@ -75,12 +69,13 @@ public abstract class AbstractFriends extends FragmentActivity
             {
                 String firstName=res.getString(0);
                 String lastName=res.getString(1);
-                String phoneNumber=res.getString(2);
-                String gender=res.getString(3);
-                String hobbies=res.getString(4);
-                String redLine=res.getString(5);
+                int age=Integer.parseInt(res.getString(2));
+                String phoneNumber=res.getString(3);
+                String gender=res.getString(4);
+                String hobbies=res.getString(5);
+                String redLine=res.getString(6);
 
-                Friend f = new Friend( firstName,  lastName,  phoneNumber,  gender,  hobbies,  redLine);
+                Friend f = new Friend( firstName,  lastName, age,   phoneNumber,  gender,  hobbies,  redLine);
                 arrayList.add(f);
 
 

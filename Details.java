@@ -454,7 +454,7 @@ public class Details extends AppCompatActivity
                     clearAllRedLines();
 
                     String gender=radio_choose.getText().toString();
-                    boolean isInserted = myDb.insertFriend(firstName, lastName, phoneNumber, gender, hobbies, redLine);
+                    boolean isInserted = myDb.insertFriend(firstName, lastName, age,  phoneNumber, gender, hobbies, redLine);
                     if (isInserted==true)
                     {
                         Toast.makeText(Details.this, gender+", "+firstName+", "+lastName+", "+phoneNumber+" added successfully", Toast.LENGTH_SHORT ).show();

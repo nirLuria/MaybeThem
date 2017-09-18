@@ -19,10 +19,11 @@ public class DataBaseHelper extends SQLiteOpenHelper
     public static final String TableFriends= "Table_Of_Friends";
     public static final String col1= "FIRST_NAME";
     public static final String col2= "LAST_NAME";
-    public static final String col3= "PHONE_NUMBER";
-    public static final String col4= "GENDER";
-    public static final String col5= "HOBBIES";
-    public static final String col6= "RED_LINE";
+    public static final String col3= "AGE";
+    public static final String col4= "PHONE_NUMBER";
+    public static final String col5= "GENDER";
+    public static final String col6= "HOBBIES";
+    public static final String col7= "RED_LINE";
 
 
 
@@ -32,10 +33,12 @@ public class DataBaseHelper extends SQLiteOpenHelper
         super(context, DATABASE_NAME, null, 1);
     }
 
+
+
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        db.execSQL("Create table "+ TableFriends +" (FIRST_NAME TEXT , LAST_NAME TEXT, PHONE_NUMBER TEXT PRIMARY KEY, GENDER TEXT, HOBBIES TEXT, RED_LINE TEXT ) ");
+        db.execSQL("Create table "+ TableFriends +" (FIRST_NAME TEXT , LAST_NAME TEXT, AGE INTEGER, PHONE_NUMBER TEXT PRIMARY KEY, GENDER TEXT, HOBBIES TEXT, RED_LINE TEXT ) ");
         System.out.println("created clean database");
     }
 
@@ -49,23 +52,24 @@ public class DataBaseHelper extends SQLiteOpenHelper
 
     ///////////////////////////////////    WRITE    /////////////////////////////////
 
-    public boolean insertFriend (String firstName, String lastName, String phoneNumber, String gender, String hobbies, String redLine)
+    public boolean insertFriend (String firstName, String lastName, String age, String phoneNumber, String gender, String hobbies, String redLine)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(col1, firstName);
         contentValues.put(col2, lastName);
-        contentValues.put(col3, phoneNumber);
+        contentValues.put(col3, age);
+        contentValues.put(col4, phoneNumber);
         if (gender.equals("בן"))
         {
-            contentValues.put(col4, "man");
+            contentValues.put(col5, "man");
         }
         else
         {
-            contentValues.put(col4, "woman");
+            contentValues.put(col5, "woman");
         }
-        contentValues.put(col5, hobbies);
-        contentValues.put(col6, redLine);
+        contentValues.put(col6, hobbies);
+        contentValues.put(col7, redLine);
 
 
 
@@ -91,6 +95,15 @@ public class DataBaseHelper extends SQLiteOpenHelper
         Cursor res = db.rawQuery(query, null);
 
         return res;
+    }
+
+    public int getFriendsCount(String gender)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = ( "select * from "+TableFriends+" where GENDER='" + gender  + "'; " );
+        Cursor res = db.rawQuery(query, null);
+
+        return res.getCount();
     }
 
 
