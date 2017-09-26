@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,7 +25,14 @@ import android.widget.Toast;
 
 import com.maybethem.maybethem.friends.Friend;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+
+import static java.io.FileDescriptor.out;
 
 /**
  * Created by nirlu on 06/09/2017.
@@ -68,11 +78,23 @@ public class Details extends AppCompatActivity
     Uri imageUri;
 
 
+
+
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_of_new_friend_activity);
 
+        initialize();
+        redLineOnClickListener();
+        hobbiesOnClickListener();
+        submit();
+
+    }
+
+
+    public void initialize()
+    {
         firstNameET = (EditText)findViewById(R.id.add_first_name);
         lastNameET = (EditText)findViewById(R.id.add_last_name);
         ageET = (EditText)findViewById(R.id.add_age);
@@ -83,11 +105,8 @@ public class Details extends AppCompatActivity
         mHobbies = (Button)findViewById(R.id.btnHobbies);
         mRedLine = (Button)findViewById(R.id.btnRedLine);
 
-
         btnChoose=(Button)findViewById(R.id.btnChoose);
         imageView=(ImageView)findViewById(R.id.imageView);
-
-
 
         btnChoose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,13 +114,7 @@ public class Details extends AppCompatActivity
                 openGallery();
             }
         });
-
-
-        redLineOnClickListener();
-        hobbiesOnClickListener();
-        submit();
     }
-
 
     public void openGallery()
     {
@@ -117,9 +130,35 @@ public class Details extends AppCompatActivity
         {
             imageUri = data.getData();
             imageView.setImageURI(imageUri);
+            imageView.getLayoutParams().height = 80;
+            imageView.getLayoutParams().width = 140;
+
+        }
+    }
+
+
+    public byte[] imageViewToBite(ImageView image)
+    {
+        Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+
+        int size = stream.size();
+
+        // Greater than 2 MB
+        if( size> (1024 * 1024 * 2) )
+        {
+            System.out.println("image is too big: "+size);
+        }
+        else
+        {
+            System.out.println("image is too small: "+size);
         }
 
+        byte[] byteArray = stream.toByteArray();
+        return  byteArray;
     }
+
 
     public void addOtherHobbies()
     {
@@ -443,7 +482,7 @@ public class Details extends AppCompatActivity
                 String lastName=lastNameET.getText().toString();
                 String age=ageET.getText().toString();
                 String phoneNumber=phoneNumberET.getText().toString();
-                String hobbies, redLine;
+                String hobbies="", redLine="";
 
                 if (!checkName(firstName))
                 {
@@ -489,7 +528,8 @@ public class Details extends AppCompatActivity
                     clearAllRedLines();
 
                     String gender=radio_choose.getText().toString();
-                    boolean isInserted = myDb.insertFriend(firstName, lastName, age,  phoneNumber, gender, hobbies, redLine);
+
+                    boolean isInserted = myDb.insertFriend(firstName, lastName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)));
                     if (isInserted==true)
                     {
                         Toast.makeText(Details.this, gender+", "+firstName+", "+lastName+", "+phoneNumber+" added successfully", Toast.LENGTH_SHORT ).show();
@@ -498,18 +538,20 @@ public class Details extends AppCompatActivity
                         ageET.setText("");
                         phoneNumberET.setText("");
                         radio_choose.setChecked(false);
+                        imageView.setImageResource(R.mipmap.ic_launcher);
                     }
                     else
                     {
                         Toast.makeText(Details.this,"error in adding friend", Toast.LENGTH_SHORT ).show();
                     }
+
                 }
-
-
             }
         });
 
     }
+
+
 
 
     public boolean checkName(String firstName)

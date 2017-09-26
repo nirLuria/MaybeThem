@@ -2,6 +2,8 @@ package com.maybethem.maybethem.swipe;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.maybethem.maybethem.DataBaseHelper;
+import com.maybethem.maybethem.Details;
 import com.maybethem.maybethem.R;
 import com.maybethem.maybethem.friends.Friend;
 
@@ -44,10 +47,6 @@ public class CustomSwipeAdapter71 extends PagerAdapter
     {
         return myDb.getFriendsCount(gender);
 
-
-
-        //return 7;
-        //return image_resources.length;
     }
 
     @Override
@@ -68,7 +67,10 @@ public class CustomSwipeAdapter71 extends PagerAdapter
         TextView textViewRedLine = (TextView)itemView.findViewById(R.id.red_line);
 
 
-        imageView.setImageResource(image_resources[position/5]);
+
+
+
+
 
         ArrayList arrayOfFriends = getMyFriends(gender);
         Friend friend = (Friend) arrayOfFriends.get(position);
@@ -79,10 +81,16 @@ public class CustomSwipeAdapter71 extends PagerAdapter
         textViewRedLine.setText("קו אדום מבחינתו: " +friend.getRedLine());
 
 
+        byte[] foodImage = friend.getImage();
+        friend.printImage();
+        Bitmap bitmap = BitmapFactory.decodeByteArray(foodImage, 0, foodImage.length);
+        imageView.setImageBitmap(bitmap);
+        imageView.getLayoutParams().height = 180;
+        imageView.getLayoutParams().width = 240;
+        ///
+
+
         System.out.println("friend: "+friend.getFirstName()+", "+friend.getLastName()+", "+ friend.getAge());
-
-
-        //  textView.setText("Image: "+position);
 
         container.addView(itemView);
 
@@ -122,8 +130,9 @@ public class CustomSwipeAdapter71 extends PagerAdapter
                 String gender=res.getString(4);
                 String hobbies=res.getString(5);
                 String redLine=res.getString(6);
+                byte[] image = res.getBlob(7);
 
-                Friend f = new Friend( firstName,  lastName, age,  phoneNumber,  gender,  hobbies,  redLine);
+                Friend f = new Friend( firstName,  lastName, age,  phoneNumber,  gender,  hobbies,  redLine, image);
                 arrayList.add(f);
 
 

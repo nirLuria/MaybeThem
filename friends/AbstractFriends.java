@@ -74,8 +74,10 @@ public abstract class AbstractFriends extends FragmentActivity
                 String gender=res.getString(4);
                 String hobbies=res.getString(5);
                 String redLine=res.getString(6);
+                byte[] image=res.getBlob(7);
 
-                Friend f = new Friend( firstName,  lastName, age,   phoneNumber,  gender,  hobbies,  redLine);
+
+                Friend f = new Friend( firstName,  lastName, age,   phoneNumber,  gender,  hobbies,  redLine, image);
                 arrayList.add(f);
 
 
@@ -83,6 +85,9 @@ public abstract class AbstractFriends extends FragmentActivity
         }
         return arrayList;
     }
+
+
+
 
     public void print(String gender)
     {
