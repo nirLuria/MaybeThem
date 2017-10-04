@@ -108,6 +108,10 @@ public class Details extends AppCompatActivity
         btnChoose=(Button)findViewById(R.id.btnChoose);
         imageView=(ImageView)findViewById(R.id.imageView);
 
+        //hide the image.
+        imageView.setScaleX(1);
+        imageView.setScaleY(1);
+
         btnChoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -475,7 +479,7 @@ public class Details extends AppCompatActivity
             public void onClick(View v)
             {
 
-                radioGroup= (RadioGroup) findViewById(R.id.radioGroup);
+                radioGroup= (RadioGroup) findViewById(R.id.gender_radio_group);
                 int selected_id=radioGroup.getCheckedRadioButtonId();
                 radio_choose = (RadioButton) findViewById(selected_id);
                 String firstName=firstNameET.getText().toString();
