@@ -26,7 +26,6 @@ import java.util.ArrayList;
 public class CustomSwipeAdapter71 extends PagerAdapter
 {
 
-    private int[] image_resources= {R.drawable.sample1, R.drawable.sample2, R.drawable.sample3, R.drawable.sample4, R.drawable.sample5};
     private Context ctx;
     private LayoutInflater layoutInflater;
     DataBaseHelper myDb;
