@@ -1,8 +1,11 @@
 package com.maybethem.maybethem.pair;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.maybethem.maybethem.DataBaseHelper;
@@ -21,6 +24,8 @@ public class Pair extends AppCompatActivity
 
     DataBaseHelper myDb;
     TextView manText, womanText;
+    Button refresh_button;
+
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -34,6 +39,7 @@ public class Pair extends AppCompatActivity
 
 
         generatePair();
+        refreshActivity();
     }
 
 
@@ -121,4 +127,20 @@ public class Pair extends AppCompatActivity
 
         return f;
     }
+
+
+    public void refreshActivity()
+    {
+
+        refresh_button= (Button)findViewById(R.id.refreshBtn);
+        refresh_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = getIntent();
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
 }

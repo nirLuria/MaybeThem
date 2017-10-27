@@ -1,6 +1,7 @@
 package com.maybethem.maybethem;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,63 +12,36 @@ public class MainActivity extends AppCompatActivity
 {
     Button new_friend_button;
     Button pair;
+    private static int SPLASH_TIME_OUT=1000;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
 
+        setContentView(R.layout.welcome_screen_activity);
 
 
-        setContentView(R.layout.activity_main);
-
-        //functions:
-
-
-        addFriendClickListener();
-        myContainerClickListener();
-        pairClickListener();
-
-    }
-
-
-
-    public void pairClickListener()
-    {
-        pair= (Button)findViewById(R.id.button_create_match);
-        pair.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent("com.maybethem.maybethem.pair.Pair");
+        //welcome screen.
+        //
+        new Handler().postDelayed(new Runnable()
+        {
+            public void run()
+            {
+                Intent intent = new Intent(MainActivity.this, Main.class);
                 startActivity(intent);
+                finish();
+
+
             }
-        });
+        },SPLASH_TIME_OUT);
+
+
     }
 
-    public void addFriendClickListener()
-    {
-        new_friend_button= (Button)findViewById(R.id.button_add_friends);
-        new_friend_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent("com.maybethem.maybethem.Details");
-                startActivity(intent);
-            }
-        });
-    }
 
-    public void myContainerClickListener()
-    {
-        new_friend_button= (Button)findViewById(R.id.button_my_container);
-        new_friend_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent("com.maybethem.maybethem.ContainerChoose");
-                startActivity(intent);
-            }
-        });
-    }
 
 
 
