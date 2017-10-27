@@ -51,7 +51,7 @@ public class Main extends AppCompatActivity
         new_friend_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent("com.maybethem.maybethem.Details");
+                Intent intent = new Intent("com.maybethem.maybethem.ChooseGenderToAdd");
                 startActivity(intent);
             }
         });
