@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity
 {
     Button new_friend_button;
     Button pair;
-    private static int SPLASH_TIME_OUT=10;
+    private static int SPLASH_TIME_OUT=1000;
 
 
     @Override

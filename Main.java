@@ -1,6 +1,7 @@
 package com.maybethem.maybethem;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,14 +10,12 @@ import android.widget.Toast;
 
 public class Main extends AppCompatActivity
 {
-    Button new_friend_button;
-    Button pair;
+    Button add, pair, container;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
 
 
@@ -47,8 +46,8 @@ public class Main extends AppCompatActivity
 
     public void addFriendClickListener()
     {
-        new_friend_button= (Button)findViewById(R.id.button_add_friends);
-        new_friend_button.setOnClickListener(new View.OnClickListener() {
+        add= (Button)findViewById(R.id.button_add_friends);
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent("com.maybethem.maybethem.ChooseGenderToAdd");
@@ -59,8 +58,8 @@ public class Main extends AppCompatActivity
 
     public void myContainerClickListener()
     {
-        new_friend_button= (Button)findViewById(R.id.button_my_container);
-        new_friend_button.setOnClickListener(new View.OnClickListener() {
+        container= (Button)findViewById(R.id.button_my_container);
+        container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent("com.maybethem.maybethem.ContainerChoose");
