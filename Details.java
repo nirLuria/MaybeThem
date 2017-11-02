@@ -70,6 +70,8 @@ public class Details extends AppCompatActivity
     boolean otherRedLineIsChecked=false;
     String otherRedLine, redLineItems;
     EditText inputRedLine;
+    String redLineInnerText;
+
 
     //image variables.
     ImageView imageView;
@@ -86,6 +88,7 @@ public class Details extends AppCompatActivity
         setContentView(R.layout.details_of_new_friend_activity);
 
         gender="man";
+        redLineInnerText="הוא לא יצא עם בחורה ";
         initialize();
         redLineOnClickListener();
         hobbiesOnClickListener();
@@ -370,9 +373,6 @@ public class Details extends AppCompatActivity
     public void redLineOnClickListener()
     {
 
-
-
-
         mRedLineItemSelected = (TextView)findViewById(R.id.tvRedLineItemSelected);
         redLineListItems= getResources().getStringArray(R.array.red_line_item);
         redLineCheckedItems = new boolean[redLineListItems.length];
@@ -380,7 +380,7 @@ public class Details extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(Details.this);
-                mBuilder.setTitle("קו אדום:");
+                mBuilder.setTitle(redLineInnerText);
                 mBuilder.setMultiChoiceItems(redLineListItems, redLineCheckedItems, new DialogInterface.OnMultiChoiceClickListener()
                 {
                     @Override
