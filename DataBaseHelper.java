@@ -59,7 +59,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
         contentValues.put(col2, lastName);
         contentValues.put(col3, age);
         contentValues.put(col4, phoneNumber);
-        if (gender.equals("בן"))
+        if (gender.equals("man"))
         {
             contentValues.put(col5, "man");
         }

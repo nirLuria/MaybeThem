@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 /**
  * Created by nirlu on 27/10/2017.
@@ -12,7 +14,7 @@ import android.widget.Button;
 
 public class ChooseGenderToAdd extends AppCompatActivity
 {
-    Button man, woman;
+    RadioButton man, woman;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,35 +25,44 @@ public class ChooseGenderToAdd extends AppCompatActivity
 
         setContentView(R.layout.choose_gender_activity);
 
-        //functions:
+         //functions:
 
         manClickListener();
         womanClickListener();
+
+
     }
 
 
     public void manClickListener()
     {
-        man= (Button)findViewById(R.id.buttonMan);
+        man= (RadioButton)findViewById(R.id.buttonMan);
         man.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent("com.maybethem.maybethem.Details");
+                man.setChecked(false);
+
                 startActivity(intent);
-            }
+
+              }
         });
+
     }
 
     public void womanClickListener()
     {
-        woman= (Button)findViewById(R.id.buttonWoman);
+        woman= (RadioButton)findViewById(R.id.buttonWoman);
         woman.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent("com.maybethem.maybethem.Details");
+                Intent intent = new Intent("com.maybethem.maybethem.DetailsWoman");
+                woman.setChecked(false);
+
                 startActivity(intent);
             }
         });
+
     }
 
 

@@ -47,7 +47,7 @@ public class Details extends AppCompatActivity
     private static RadioGroup radioGroup;
     private static RadioButton radio_choose;
     DataBaseHelper myDb;
-
+    String gender;
 
     //hobbies variables.
     EditText inputHobbies;
@@ -85,6 +85,7 @@ public class Details extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_of_new_friend_activity);
 
+        gender="man";
         initialize();
         redLineOnClickListener();
         hobbiesOnClickListener();
@@ -479,9 +480,9 @@ public class Details extends AppCompatActivity
             public void onClick(View v)
             {
 
-                radioGroup= (RadioGroup) findViewById(R.id.gender_radio_group);
-                int selected_id=radioGroup.getCheckedRadioButtonId();
-                radio_choose = (RadioButton) findViewById(selected_id);
+               // radioGroup= (RadioGroup) findViewById(R.id.gender_radio_group);
+               // int selected_id=radioGroup.getCheckedRadioButtonId();
+               // radio_choose = (RadioButton) findViewById(selected_id);
                 String firstName=firstNameET.getText().toString();
                 String lastName=lastNameET.getText().toString();
                 String age=ageET.getText().toString();
@@ -496,10 +497,12 @@ public class Details extends AppCompatActivity
                 {
                     printLNameError();
                 }
+                /*
                 else if (!checkGender())
                 {
                     printGenderError();
                 }
+                */
                 else if (!checkAge(age))
                 {
                     printAgeError();
@@ -531,7 +534,7 @@ public class Details extends AppCompatActivity
                     clearAllHobbies();
                     clearAllRedLines();
 
-                    String gender=radio_choose.getText().toString();
+                    //String gender=radio_choose.getText().toString();
 
                     boolean isInserted = myDb.insertFriend(firstName, lastName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)));
                     if (isInserted==true)
@@ -541,7 +544,7 @@ public class Details extends AppCompatActivity
                         lastNameET.setText("");
                         ageET.setText("");
                         phoneNumberET.setText("");
-                        radio_choose.setChecked(false);
+                   //     radio_choose.setChecked(false);
                         imageView.setImageResource(R.mipmap.ic_launcher);
                     }
                     else
