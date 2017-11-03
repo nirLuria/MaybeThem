@@ -28,6 +28,7 @@ public class DetailsWoman extends Details
         initialize();
         redLineOnClickListener();
         hobbiesOnClickListener();
+        callContactsList();
         submit();
 
     }

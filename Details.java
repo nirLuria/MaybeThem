@@ -1,5 +1,6 @@
 package com.maybethem.maybethem;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,7 +10,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -43,11 +46,13 @@ public class Details extends AppCompatActivity
 
 
     Button submit;
+    Button contact;
     EditText ageET, firstNameET, lastNameET, phoneNumberET;
     private static RadioGroup radioGroup;
     private static RadioButton radio_choose;
     DataBaseHelper myDb;
     String gender;
+    private final static int PICK_CONTACT = 1;
 
     //hobbies variables.
     EditText inputHobbies;
@@ -92,9 +97,12 @@ public class Details extends AppCompatActivity
         initialize();
         redLineOnClickListener();
         hobbiesOnClickListener();
+        callContactsList();
         submit();
 
     }
+
+
 
 
     public void initialize()
@@ -105,6 +113,9 @@ public class Details extends AppCompatActivity
         phoneNumberET = (EditText)findViewById(R.id.add_phone);
         myDb = new DataBaseHelper(this);
         otherHobbies="";
+
+
+        contact= (Button)findViewById(R.id.contactListSearch);
 
         mHobbies = (Button)findViewById(R.id.btnHobbies);
         mRedLine = (Button)findViewById(R.id.btnRedLine);
@@ -124,12 +135,106 @@ public class Details extends AppCompatActivity
         });
     }
 
+    public void callContactsList()
+    {
+        contact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                callContactsClickListener(null);
+            }
+        });
+    }
+
+
+
+
+
+    //functions for getting contact information.
+    //1.
+    public  void callContactsClickListener(View v)
+    {
+        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        startActivityForResult(intent, PICK_CONTACT);
+    }
+
+
+
+    //2.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //for getting phone name and number.
+        if (requestCode==PICK_CONTACT)
+        {
+            if (resultCode== ActionBarActivity.RESULT_OK)
+            {
+                Uri contactData = data.getData();
+                Cursor c = getContentResolver().query(contactData, null, null,null,null);
+
+                if(c.moveToFirst())
+                {
+                    String friendName = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
+                    if (Integer.parseInt(c.getString(c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0)
+                    {
+                        String friendNumber = getContactNumber(friendName);
+                        Toast.makeText(Details.this,"friendNumber: "+friendNumber+", friendName: "+friendName, Toast.LENGTH_SHORT ).show();
+                    }
+                }
+            }
+        }
+
+        //for image processing.
+        else if(resultCode==RESULT_OK && requestCode==PICK_IMAGE)
+        {
+            imageUri = data.getData();
+            imageView.setImageURI(imageUri);
+            imageView.getLayoutParams().height = 80;
+            imageView.getLayoutParams().width = 140;
+
+        }
+    }
+
+
+
+    //3.Find contact based on name.
+    private String getContactNumber(String name)
+    {
+        String ret=null;
+        ContentResolver cr = getContentResolver();
+        Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null,
+                "DISPLAY_NAME = '" + name + "'", null, null);
+        if (cursor.moveToFirst())
+        {
+            String contactId =
+                    cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+
+            Cursor phones = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
+            while (phones.moveToNext())
+            {
+                String number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                ret=number;
+            }
+            phones.close();
+        }
+        cursor.close();
+
+        return ret;
+    }
+
+
     public void openGallery()
     {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, PICK_IMAGE);
     }
 
+
+    /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -143,7 +248,7 @@ public class Details extends AppCompatActivity
 
         }
     }
-
+*/
 
     public byte[] imageViewToBite(ImageView image)
     {
