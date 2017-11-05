@@ -52,7 +52,11 @@ public class Details extends AppCompatActivity
     private static RadioButton radio_choose;
     DataBaseHelper myDb;
     String gender;
+
     private final static int PICK_CONTACT = 1;
+    private final static int imageHeight = 80;
+    private final static int imageWidth = 140;
+
 
     //hobbies variables.
     EditText inputHobbies;
@@ -108,7 +112,7 @@ public class Details extends AppCompatActivity
     public void initialize()
     {
         firstNameET = (EditText)findViewById(R.id.add_first_name);
-        lastNameET = (EditText)findViewById(R.id.add_last_name);
+       // lastNameET = (EditText)findViewById(R.id.add_last_name);
         ageET = (EditText)findViewById(R.id.add_age);
         phoneNumberET = (EditText)findViewById(R.id.add_phone);
         myDb = new DataBaseHelper(this);
@@ -178,22 +182,37 @@ public class Details extends AppCompatActivity
                 if(c.moveToFirst())
                 {
                     String friendName = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
+                    String image = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.PHOTO_URI));
+
                     if (Integer.parseInt(c.getString(c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0)
                     {
                         String friendNumber = getContactNumber(friendName);
                         Toast.makeText(Details.this,"friendNumber: "+friendNumber+", friendName: "+friendName, Toast.LENGTH_SHORT ).show();
+                        firstNameET.setText(friendName);
+                        phoneNumberET.setText(friendNumber);
+
+                        //set image.
+                        System.out.println("image is: "+image);
+                        if (image!=null)
+                        {
+                            imageView.setImageURI(Uri.parse(image));
+                            imageView.getLayoutParams().height = imageHeight;
+                            imageView.getLayoutParams().width = imageWidth;
+                        }
+
                     }
                 }
             }
         }
+
 
         //for image processing.
         else if(resultCode==RESULT_OK && requestCode==PICK_IMAGE)
         {
             imageUri = data.getData();
             imageView.setImageURI(imageUri);
-            imageView.getLayoutParams().height = 80;
-            imageView.getLayoutParams().width = 140;
+            imageView.getLayoutParams().height = imageHeight;
+            imageView.getLayoutParams().width = imageWidth;
 
         }
     }
@@ -577,7 +596,6 @@ public class Details extends AppCompatActivity
     public void submit()
     {
 
-
         submit= (Button) findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener()
         {
@@ -641,12 +659,12 @@ public class Details extends AppCompatActivity
 
                     //String gender=radio_choose.getText().toString();
 
-                    boolean isInserted = myDb.insertFriend(firstName, lastName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)));
+                    boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)));
                     if (isInserted==true)
                     {
                         Toast.makeText(Details.this, gender+", "+firstName+", "+lastName+", "+phoneNumber+" added successfully", Toast.LENGTH_SHORT ).show();
                         firstNameET.setText("");
-                        lastNameET.setText("");
+                  //      lastNameET.setText("");
                         ageET.setText("");
                         phoneNumberET.setText("");
                    //     radio_choose.setChecked(false);

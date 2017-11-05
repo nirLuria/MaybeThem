@@ -19,13 +19,13 @@ public class DataBaseHelper extends SQLiteOpenHelper
     //table of friends.
     public static final String TableFriends= "Table_Of_Friends";
     public static final String col1= "FIRST_NAME";
-    public static final String col2= "LAST_NAME";
-    public static final String col3= "AGE";
-    public static final String col4= "PHONE_NUMBER";
-    public static final String col5= "GENDER";
-    public static final String col6= "HOBBIES";
-    public static final String col7= "RED_LINE";
-    public static final String col8= "IMAGE";
+  //  public static final String col2= "LAST_NAME";
+    public static final String col2= "AGE";
+    public static final String col3= "PHONE_NUMBER";
+    public static final String col4= "GENDER";
+    public static final String col5= "HOBBIES";
+    public static final String col6= "RED_LINE";
+    public static final String col7= "IMAGE";
 
 
     public DataBaseHelper(Context context)
@@ -51,25 +51,25 @@ public class DataBaseHelper extends SQLiteOpenHelper
 
     ///////////////////////////////////    WRITE    /////////////////////////////////
 
-    public boolean insertFriend (String firstName, String lastName, String age, String phoneNumber, String gender, String hobbies, String redLine, byte[] image)
+    public boolean insertFriend (String firstName, String age, String phoneNumber, String gender, String hobbies, String redLine, byte[] image)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(col1, firstName);
-        contentValues.put(col2, lastName);
-        contentValues.put(col3, age);
-        contentValues.put(col4, phoneNumber);
+   //     contentValues.put(col2, lastName);
+        contentValues.put(col2, age);
+        contentValues.put(col3, phoneNumber);
         if (gender.equals("man"))
         {
-            contentValues.put(col5, "man");
+            contentValues.put(col4, "man");
         }
         else
         {
-            contentValues.put(col5, "woman");
+            contentValues.put(col4, "woman");
         }
-        contentValues.put(col6, hobbies);
-        contentValues.put(col7, redLine);
-        contentValues.put(col8, image);
+        contentValues.put(col5, hobbies);
+        contentValues.put(col6, redLine);
+        contentValues.put(col7, image);
 
         System.out.println("image is "+image);
 
