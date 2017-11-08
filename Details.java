@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -54,8 +55,8 @@ public class Details extends AppCompatActivity
     String gender;
 
     private final static int PICK_CONTACT = 1;
-    private final static int imageHeight = 80;
-    private final static int imageWidth = 140;
+    public final static int imageHeight = 80;
+    public final static int imageWidth = 140;
 
 
     //hobbies variables.
@@ -99,6 +100,7 @@ public class Details extends AppCompatActivity
         gender="man";
         redLineInnerText="הוא לא יצא עם בחורה ";
         initialize();
+        setAnnonimousImage();
         redLineOnClickListener();
         hobbiesOnClickListener();
         callContactsList();
@@ -128,8 +130,9 @@ public class Details extends AppCompatActivity
         imageView=(ImageView)findViewById(R.id.imageView);
 
         //hide the image.
-        imageView.setScaleX(1);
-        imageView.setScaleY(1);
+      //  imageView.setScaleX(1);
+      //  imageView.setScaleY(1);
+
 
         btnChoose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,6 +141,25 @@ public class Details extends AppCompatActivity
             }
         });
     }
+
+
+    public void setAnnonimousImage()
+    {
+        String uri = "@drawable/annonimous_male";  // where myresource (without the extension) is the file
+        int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+        Drawable res = getResources().getDrawable(imageResource);
+        imageView.setImageDrawable(res);
+        imageView.getLayoutParams().height = imageHeight;
+        imageView.getLayoutParams().width = imageWidth;
+    }
+
+    public void setFriendImage(Uri imageUri)
+    {
+        imageView.setImageURI(imageUri);
+        imageView.getLayoutParams().height = imageHeight;
+        imageView.getLayoutParams().width = imageWidth;
+    }
+
 
     public void callContactsList()
     {
@@ -195,9 +217,12 @@ public class Details extends AppCompatActivity
                         System.out.println("image is: "+image);
                         if (image!=null)
                         {
-                            imageView.setImageURI(Uri.parse(image));
-                            imageView.getLayoutParams().height = imageHeight;
-                            imageView.getLayoutParams().width = imageWidth;
+                            setFriendImage(Uri.parse(image));
+                        }
+                        else
+                        {
+                          //  setFriendImage("no photo");
+
                         }
 
                     }
@@ -210,9 +235,7 @@ public class Details extends AppCompatActivity
         else if(resultCode==RESULT_OK && requestCode==PICK_IMAGE)
         {
             imageUri = data.getData();
-            imageView.setImageURI(imageUri);
-            imageView.getLayoutParams().height = imageHeight;
-            imageView.getLayoutParams().width = imageWidth;
+            setFriendImage(imageUri);
 
         }
     }
@@ -607,7 +630,7 @@ public class Details extends AppCompatActivity
                // int selected_id=radioGroup.getCheckedRadioButtonId();
                // radio_choose = (RadioButton) findViewById(selected_id);
                 String firstName=firstNameET.getText().toString();
-                String lastName=lastNameET.getText().toString();
+//                String lastName=lastNameET.getText().toString();
                 String age=ageET.getText().toString();
                 String phoneNumber=phoneNumberET.getText().toString();
                 String hobbies="", redLine="";
@@ -616,11 +639,13 @@ public class Details extends AppCompatActivity
                 {
                     printFNameError();
                 }
+
+                /*
                 else if (!checkName(lastName))
                 {
                     printLNameError();
                 }
-                /*
+
                 else if (!checkGender())
                 {
                     printGenderError();
@@ -662,13 +687,15 @@ public class Details extends AppCompatActivity
                     boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)));
                     if (isInserted==true)
                     {
-                        Toast.makeText(Details.this, gender+", "+firstName+", "+lastName+", "+phoneNumber+" added successfully", Toast.LENGTH_SHORT ).show();
+                        Toast.makeText(Details.this, gender+", "+firstName+", "+phoneNumber+" added successfully", Toast.LENGTH_SHORT ).show();
                         firstNameET.setText("");
                   //      lastNameET.setText("");
                         ageET.setText("");
                         phoneNumberET.setText("");
                    //     radio_choose.setChecked(false);
-                        imageView.setImageResource(R.mipmap.ic_launcher);
+
+                        //imageView.setImageResource(R.mipmap.ic_launcher);
+                        setAnnonimousImage();
                     }
                     else
                     {
@@ -718,12 +745,12 @@ public class Details extends AppCompatActivity
     {
         if (number.equals(""))
             return false;
-        if (!number.matches("[0-9]+"))
+        if (!number.matches("[0-9+]+"))         //only numbers and '+'.
             return false;
         if (number.length()<9)
             return false;
-        if (number.charAt(0)!='0')
-            return false;
+    //    if (number.charAt(0)!='0')
+      //      return false;
 
 
         //check that the new phone number is unique.

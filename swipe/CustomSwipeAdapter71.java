@@ -8,14 +8,17 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.maybethem.maybethem.DataBaseHelper;
 import com.maybethem.maybethem.Details;
 import com.maybethem.maybethem.R;
 import com.maybethem.maybethem.friends.Friend;
+import com.maybethem.maybethem.pair.Pair;
 
 import java.util.ArrayList;
 
@@ -30,7 +33,7 @@ public class CustomSwipeAdapter71 extends PagerAdapter
     private LayoutInflater layoutInflater;
     DataBaseHelper myDb;
     String gender;
-
+    Button deleteFriend;
 
     public CustomSwipeAdapter71(Context ctx, DataBaseHelper myDb, String gender)
     {
@@ -73,7 +76,7 @@ public class CustomSwipeAdapter71 extends PagerAdapter
 
         ArrayList arrayOfFriends = getMyFriends(gender);
         Friend friend = (Friend) arrayOfFriends.get(position);
-        textViewFirstName.setText( friend.getFirstName()+" "+friend.getLastName() );
+        textViewFirstName.setText( friend.getFirstName() );
         textViewAge.setText("גיל: " +friend.getAge());
         textViewNumber.setText("מס' פלאפון: " +friend.getPhoneNumber());
         textViewHobbies.setText("תחביבים: " +friend.getHobbies());
@@ -89,7 +92,7 @@ public class CustomSwipeAdapter71 extends PagerAdapter
         ///
 
 
-        System.out.println("friend: "+friend.getFirstName()+", "+friend.getLastName()+", "+ friend.getAge());
+   //     System.out.println("friend: "+friend.getFirstName()+", "+friend.getLastName()+", "+ friend.getAge());
 
         container.addView(itemView);
 
@@ -123,15 +126,15 @@ public class CustomSwipeAdapter71 extends PagerAdapter
             while (res.moveToNext())
             {
                 String firstName=res.getString(0);
-                String lastName=res.getString(1);
-                int age=Integer.parseInt(res.getString(2));
-                String phoneNumber=res.getString(3);
-                String gender=res.getString(4);
-                String hobbies=res.getString(5);
-                String redLine=res.getString(6);
-                byte[] image = res.getBlob(7);
+     //           String lastName=res.getString(1);
+                int age=Integer.parseInt(res.getString(1));
+                String phoneNumber=res.getString(2);
+                String gender=res.getString(3);
+                String hobbies=res.getString(4);
+                String redLine=res.getString(5);
+                byte[] image = res.getBlob(6);
 
-                Friend f = new Friend( firstName,  lastName, age,  phoneNumber,  gender,  hobbies,  redLine, image);
+                Friend f = new Friend( firstName, age,  phoneNumber,  gender,  hobbies,  redLine, image);
                 arrayList.add(f);
 
 
@@ -140,5 +143,16 @@ public class CustomSwipeAdapter71 extends PagerAdapter
         return arrayList;
     }
 
+
+    public void deleteFriend()
+    {
+        deleteFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+             //   Toast.makeText(CustomSwipeAdapter71.this,"there are no women", Toast.LENGTH_SHORT ).show();
+            }
+        });
+    }
 
 }

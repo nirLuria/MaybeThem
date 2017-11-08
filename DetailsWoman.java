@@ -1,6 +1,7 @@
 package com.maybethem.maybethem;
 
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -26,12 +27,25 @@ public class DetailsWoman extends Details
         textChanges();
 
         initialize();
+        setAnnonimousImage();
         redLineOnClickListener();
         hobbiesOnClickListener();
         callContactsList();
         submit();
 
     }
+
+    public void setAnnonimousImage()
+    {
+        String uri = "@drawable/annonimous_female";  // where myresource (without the extension) is the file
+        int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+        Drawable res = getResources().getDrawable(imageResource);
+        imageView.setImageDrawable(res);
+        imageView.getLayoutParams().height = imageHeight;
+        imageView.getLayoutParams().width = imageWidth;
+    }
+
+
 
     public void textChanges()
     {

@@ -8,7 +8,7 @@ public class Friend
 {
 
     String firstNsame;
-    String lastName;
+  //  String lastName;
     String phoneNumber;
     int age;
     String gender;
@@ -16,10 +16,10 @@ public class Friend
     String redLine;
     byte[] image;
 
-    public Friend(String firstNsame, String lastName, int age, String phoneNumber, String gender, String hobbies, String redLine, byte[] image)
+    public Friend(String firstNsame, int age, String phoneNumber, String gender, String hobbies, String redLine, byte[] image)
     {
         this.firstNsame = firstNsame;
-        this.lastName = lastName;
+   //     this.lastName = lastName;
         this.age = age;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
@@ -37,14 +37,14 @@ public class Friend
         this.firstNsame = firstNsame;
     }
 
-    public String getLastName() {
+  /*  public String getLastName() {
         return lastName;
     }
 
     public void setLastNsame(String lastNsame) {
         this.lastName = lastNsame;
     }
-
+*/
     public int getAge() {return age;}
 
     public void setAge(int age) {this.age = age;}
@@ -83,7 +83,7 @@ public class Friend
 
     public void printFriend()
     {
-        System.out.println("--------------------------------------My details are: "+firstNsame+", "+lastName+", "+phoneNumber+", "+gender+", "+hobbies+", "+redLine);
+        System.out.println("--------------------------------------My details are: "+firstNsame+", "+phoneNumber+", "+gender+", "+hobbies+", "+redLine);
     }
 
     public void printImage()
@@ -93,7 +93,7 @@ public class Friend
 
     public String getPrintFriend()
     {
-        return "--------------------------------------My details are: "+firstNsame+", "+lastName+", "+phoneNumber+", "+gender+", "+hobbies+", "+redLine;
+        return "--------------------------------------My details are: "+firstNsame+", "+phoneNumber+", "+gender+", "+hobbies+", "+redLine;
     }
 
 

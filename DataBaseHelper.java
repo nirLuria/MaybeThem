@@ -37,7 +37,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        db.execSQL("Create table "+ TableFriends +" (FIRST_NAME TEXT , LAST_NAME TEXT, AGE INTEGER, PHONE_NUMBER TEXT PRIMARY KEY, GENDER TEXT, HOBBIES TEXT, RED_LINE TEXT,  image BLOG ) ");
+        db.execSQL("Create table "+ TableFriends +" (FIRST_NAME TEXT , AGE INTEGER, PHONE_NUMBER TEXT PRIMARY KEY, GENDER TEXT, HOBBIES TEXT, RED_LINE TEXT,  image BLOG ) ");
         System.out.println("created clean database");
     }
 

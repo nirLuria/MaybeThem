@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.maybethem.maybethem.DataBaseHelper;
+import com.maybethem.maybethem.Details;
 import com.maybethem.maybethem.R;
 import com.maybethem.maybethem.friends.Friend;
 
@@ -70,14 +72,24 @@ public class Pair extends AppCompatActivity
         else if (manCount>0)
         {
             System.out.println("there are no women");
+            Toast.makeText(Pair.this,"there are no women", Toast.LENGTH_SHORT ).show();
+
+            manText.setText("");
+            womanText.setText("");
         }
         else if (womanCount>0)
         {
             System.out.println("there are no men");
+            Toast.makeText(Pair.this,"there are no men", Toast.LENGTH_SHORT ).show();
+            manText.setText("");
+            womanText.setText("");
         }
         else
         {
             System.out.println("there are no friends at your database");
+            Toast.makeText(Pair.this,"there are no friends at your database", Toast.LENGTH_SHORT ).show();
+            manText.setText("");
+            womanText.setText("");
         }
 
     }
@@ -114,16 +126,16 @@ public class Pair extends AppCompatActivity
         }
 
         String firstName=res.getString(0);
-        String lastName=res.getString(1);
-        int age=Integer.parseInt(res.getString(2));
-        String phoneNumber=res.getString(3);
-        String gender=res.getString(4);
-        String hobbies=res.getString(5);
-        String redLine=res.getString(6);
-        byte[] image=res.getBlob(7);
+     //   String lastName=res.getString(1);
+        int age=Integer.parseInt(res.getString(1));
+        String phoneNumber=res.getString(2);
+        String gender=res.getString(3);
+        String hobbies=res.getString(4);
+        String redLine=res.getString(5);
+        byte[] image=res.getBlob(6);
 
 
-        Friend f = new Friend( firstName,  lastName, age,   phoneNumber,  gender,  hobbies,  redLine, image);
+        Friend f = new Friend( firstName, age,   phoneNumber,  gender,  hobbies,  redLine, image);
 
         return f;
     }

@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.maybethem.maybethem.DataBaseHelper;
+import com.maybethem.maybethem.Details;
 import com.maybethem.maybethem.R;
 import com.maybethem.maybethem.swipe.CustomSwipeAdapter71;
 
@@ -60,6 +62,7 @@ public abstract class AbstractFriends extends FragmentActivity
         if (res.getCount()==0)
         {
             System.out.println(" no friends");
+            Toast.makeText(AbstractFriends.this,"No friends", Toast.LENGTH_SHORT ).show();
 
             return arrayList;
         }
@@ -68,16 +71,16 @@ public abstract class AbstractFriends extends FragmentActivity
             while (res.moveToNext())
             {
                 String firstName=res.getString(0);
-                String lastName=res.getString(1);
-                int age=Integer.parseInt(res.getString(2));
-                String phoneNumber=res.getString(3);
-                String gender=res.getString(4);
-                String hobbies=res.getString(5);
-                String redLine=res.getString(6);
-                byte[] image=res.getBlob(7);
+ //               String lastName=res.getString(1);
+                int age=Integer.parseInt(res.getString(1));
+                String phoneNumber=res.getString(2);
+                String gender=res.getString(3);
+                String hobbies=res.getString(4);
+                String redLine=res.getString(5);
+                byte[] image=res.getBlob(6);
 
 
-                Friend f = new Friend( firstName,  lastName, age,   phoneNumber,  gender,  hobbies,  redLine, image);
+                Friend f = new Friend( firstName, age,   phoneNumber,  gender,  hobbies,  redLine, image);
                 arrayList.add(f);
 
 
