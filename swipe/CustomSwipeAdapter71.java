@@ -105,7 +105,9 @@ public class CustomSwipeAdapter71 extends PagerAdapter
 
 
 
-        deleteFriend(friend);
+        deleteFriend(friend, position);
+
+
 
 
         return itemView;
@@ -155,8 +157,10 @@ public class CustomSwipeAdapter71 extends PagerAdapter
     }
 
 
-    public void deleteFriend(final Friend friend)
+    public void deleteFriend(final Friend friend, final int position)
     {
+
+
         deleteFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -175,6 +179,11 @@ public class CustomSwipeAdapter71 extends PagerAdapter
                         intent = new Intent(context,Women.class);
 
                     }
+
+
+                    intent.putExtra("position", position-1);
+                    System.out.println("This is  position  "+ position);
+
                     context.startActivity(intent);
                     ((Activity)context).finish();
 
@@ -182,7 +191,7 @@ public class CustomSwipeAdapter71 extends PagerAdapter
                 }
                 else
                 {
-                    System.out.println("i can';t delete "+ friend.getPhoneNumber());
+                    System.out.println("i can't delete "+ friend.getPhoneNumber());
                 }
             }
         });
