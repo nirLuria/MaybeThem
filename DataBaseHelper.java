@@ -85,6 +85,16 @@ public class DataBaseHelper extends SQLiteOpenHelper
     }
 
 
+    public boolean deleteFriend(String phoneNumber)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        db.execSQL("DELETE FROM " + TableFriends + "  where PHONE_NUMBER='" + phoneNumber + "'; " );
+
+        return true;
+    }
+
     ///////////////////////////////////    READ    /////////////////////////////////
 
 

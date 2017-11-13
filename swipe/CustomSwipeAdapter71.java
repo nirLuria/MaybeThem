@@ -1,6 +1,8 @@
 package com.maybethem.maybethem.swipe;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,7 +19,10 @@ import android.widget.Toast;
 import com.maybethem.maybethem.DataBaseHelper;
 import com.maybethem.maybethem.Details;
 import com.maybethem.maybethem.R;
+import com.maybethem.maybethem.friends.AbstractFriends;
 import com.maybethem.maybethem.friends.Friend;
+import com.maybethem.maybethem.friends.Men;
+import com.maybethem.maybethem.friends.Women;
 import com.maybethem.maybethem.pair.Pair;
 
 import java.util.ArrayList;
@@ -29,15 +34,15 @@ import java.util.ArrayList;
 public class CustomSwipeAdapter71 extends PagerAdapter
 {
 
-    private Context ctx;
+    private Context context;
     private LayoutInflater layoutInflater;
     DataBaseHelper myDb;
     String gender;
     Button deleteFriend;
 
-    public CustomSwipeAdapter71(Context ctx, DataBaseHelper myDb, String gender)
+    public CustomSwipeAdapter71(Context context, DataBaseHelper myDb, String gender)
     {
-        this.ctx=ctx;
+        this.context=context;
         this.myDb=myDb;
         this.gender=gender;
     }
@@ -48,7 +53,6 @@ public class CustomSwipeAdapter71 extends PagerAdapter
     public int getCount()
     {
         return myDb.getFriendsCount(gender);
-
     }
 
     @Override
@@ -58,8 +62,9 @@ public class CustomSwipeAdapter71 extends PagerAdapter
 
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        layoutInflater = (LayoutInflater)ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public Object instantiateItem(ViewGroup container, int position)
+    {
+        layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView =  layoutInflater.inflate(R.layout.swipe_layout, container, false);
         ImageView imageView = (ImageView)itemView.findViewById(R.id.imageView);
         TextView textViewFirstName = (TextView)itemView.findViewById(R.id.first_name);
@@ -68,6 +73,7 @@ public class CustomSwipeAdapter71 extends PagerAdapter
         TextView textViewHobbies = (TextView)itemView.findViewById(R.id.hobbies);
         TextView textViewRedLine = (TextView)itemView.findViewById(R.id.red_line);
 
+        deleteFriend = (Button) itemView.findViewById(R.id.deleteFriend);
 
 
 
@@ -95,6 +101,11 @@ public class CustomSwipeAdapter71 extends PagerAdapter
    //     System.out.println("friend: "+friend.getFirstName()+", "+friend.getLastName()+", "+ friend.getAge());
 
         container.addView(itemView);
+
+
+
+
+        deleteFriend(friend);
 
 
         return itemView;
@@ -144,15 +155,42 @@ public class CustomSwipeAdapter71 extends PagerAdapter
     }
 
 
-    public void deleteFriend()
+    public void deleteFriend(final Friend friend)
     {
         deleteFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-             //   Toast.makeText(CustomSwipeAdapter71.this,"there are no women", Toast.LENGTH_SHORT ).show();
+                if (myDb.deleteFriend(friend.getPhoneNumber()))
+                {
+                    System.out.println("i deleted you "+ friend.getPhoneNumber());
+                    Intent intent;
+                    if (gender.equals("man"))
+                    {
+                        intent = new Intent(context,Men.class);
+
+                    }
+                    else
+                    {
+                        intent = new Intent(context,Women.class);
+
+                    }
+                    context.startActivity(intent);
+                    ((Activity)context).finish();
+
+
+                }
+                else
+                {
+                    System.out.println("i can';t delete "+ friend.getPhoneNumber());
+                }
             }
         });
     }
+
+
+
+
+
 
 }

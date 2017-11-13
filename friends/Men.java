@@ -1,8 +1,12 @@
 package com.maybethem.maybethem.friends;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.maybethem.maybethem.R;
 import com.maybethem.maybethem.swipe.CustomSwipeAdapter71;
@@ -27,6 +31,7 @@ public class Men extends AbstractFriends
         adapter = new CustomSwipeAdapter71(this, myDb, "man");
         viewPager.setAdapter(adapter);
 
+
         ///////////////
       //  title=(TextView) findViewById(R.id.title);
 //        title.setText("boys");
@@ -44,4 +49,12 @@ public class Men extends AbstractFriends
 
 
 
+    public void refreshActivity()
+    {
+
+        Intent intent = getIntent();
+        startActivity(intent);
+        finish();
+
+    }
 }
