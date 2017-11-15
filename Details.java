@@ -97,6 +97,9 @@ public class Details extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_of_new_friend_activity);
 
+
+
+
         gender="man";
         redLineInnerText="הוא לא יצא עם בחורה ";
         initialize();
@@ -106,10 +109,26 @@ public class Details extends AppCompatActivity
         callContactsList();
         submit();
 
+
+        edit();
     }
 
 
+    public void edit()
+    {
+        Intent intent = getIntent();
+        String edit= intent.getStringExtra("edit");
+        if ((edit!=null)&&(edit.equals("true")))
+        {
+            System.out.println("received age: "+intent.getIntExtra("age",0));
 
+            firstNameET.setText(intent.getStringExtra("fullName"));
+            phoneNumberET.setText(intent.getStringExtra("phoneNumber"));
+            ageET.setText(""+intent.getIntExtra("age",0));
+
+
+        }
+    }
 
     public void initialize()
     {

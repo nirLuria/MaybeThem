@@ -38,7 +38,7 @@ public class CustomSwipeAdapter71 extends PagerAdapter
     private LayoutInflater layoutInflater;
     DataBaseHelper myDb;
     String gender;
-    Button deleteFriend;
+    Button deleteFriend, editFriend;
 
     public CustomSwipeAdapter71(Context context, DataBaseHelper myDb, String gender)
     {
@@ -74,6 +74,7 @@ public class CustomSwipeAdapter71 extends PagerAdapter
         TextView textViewRedLine = (TextView)itemView.findViewById(R.id.red_line);
 
         deleteFriend = (Button) itemView.findViewById(R.id.deleteFriend);
+        editFriend = (Button) itemView.findViewById(R.id.editFriend);
 
 
 
@@ -106,6 +107,7 @@ public class CustomSwipeAdapter71 extends PagerAdapter
 
 
         deleteFriend(friend, position);
+        editFriend(friend, position);
 
 
 
@@ -193,6 +195,29 @@ public class CustomSwipeAdapter71 extends PagerAdapter
                 {
                     System.out.println("i can't delete "+ friend.getPhoneNumber());
                 }
+            }
+        });
+    }
+
+
+
+    public void editFriend(final Friend friend, final int position)
+    {
+
+
+        editFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent =new Intent(context,Details.class);
+                intent.putExtra("edit", "true");
+                intent.putExtra("fullName", friend.getFirstName());
+                intent.putExtra("phoneNumber", friend.getPhoneNumber());
+                intent.putExtra("age", friend.getAge());
+                System.out.println("age: "+friend.getAge());
+
+                context.startActivity(intent);
+             //   ((Activity)context).finish();
             }
         });
     }
