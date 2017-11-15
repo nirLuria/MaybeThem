@@ -1,5 +1,6 @@
 package com.maybethem.maybethem;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.maybethem.maybethem.friends.Friend;
+import com.maybethem.maybethem.friends.Men;
+import com.maybethem.maybethem.friends.Women;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -53,6 +56,7 @@ public class Details extends AppCompatActivity
     private static RadioButton radio_choose;
     DataBaseHelper myDb;
     String gender;
+    String oldPhoneNumber;
 
     private final static int PICK_CONTACT = 1;
     public final static int imageHeight = 80;
@@ -124,6 +128,7 @@ public class Details extends AppCompatActivity
 
             firstNameET.setText(intent.getStringExtra("fullName"));
             phoneNumberET.setText(intent.getStringExtra("phoneNumber"));
+            oldPhoneNumber=intent.getStringExtra("phoneNumber");
             ageET.setText(""+intent.getIntExtra("age",0));
 
 
@@ -703,23 +708,61 @@ public class Details extends AppCompatActivity
 
                     //String gender=radio_choose.getText().toString();
 
-                    boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)));
-                    if (isInserted==true)
+                    Intent intent = getIntent();
+                    String edit= intent.getStringExtra("edit");
+                    if ((edit!=null)&&(edit.equals("true")))
                     {
-                        Toast.makeText(Details.this, gender+", "+firstName+", "+phoneNumber+" added successfully", Toast.LENGTH_SHORT ).show();
-                        firstNameET.setText("");
-                  //      lastNameET.setText("");
-                        ageET.setText("");
-                        phoneNumberET.setText("");
-                   //     radio_choose.setChecked(false);
+                        //remove
+                        myDb.deleteFriend(oldPhoneNumber);
 
-                        //imageView.setImageResource(R.mipmap.ic_launcher);
-                        setAnnonimousImage();
+                        //add again.
+                        boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)));
+                        if (isInserted==true)
+                        {
+                            Toast.makeText(Details.this, gender+", "+firstName+", "+phoneNumber+" changed successfully", Toast.LENGTH_SHORT ).show();
+                            finish();
+
+                            Intent refresh;
+                            if (gender.equals("man"))
+                            {
+                                refresh = new Intent("com.maybethem.maybethem.friends.Men");
+                                startActivity(refresh);
+                            }
+                            else
+                            {
+                                refresh = new Intent("com.maybethem.maybethem.friends.Women");
+                                startActivity(refresh);
+
+                            }
+
+                        }
+                        else
+                        {
+                            Toast.makeText(Details.this,"error with editing friend", Toast.LENGTH_SHORT ).show();
+                        }
                     }
                     else
                     {
-                        Toast.makeText(Details.this,"error in adding friend", Toast.LENGTH_SHORT ).show();
+                        boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)));
+                        if (isInserted==true)
+                        {
+                            Toast.makeText(Details.this, gender+", "+firstName+", "+phoneNumber+" added successfully", Toast.LENGTH_SHORT ).show();
+                            firstNameET.setText("");
+                            //      lastNameET.setText("");
+                            ageET.setText("");
+                            phoneNumberET.setText("");
+                            //     radio_choose.setChecked(false);
+
+                            //imageView.setImageResource(R.mipmap.ic_launcher);
+                            setAnnonimousImage();
+                        }
+                        else
+                        {
+                            Toast.makeText(Details.this,"error in adding friend", Toast.LENGTH_SHORT ).show();
+                        }
                     }
+
+
 
                 }
             }
@@ -771,15 +814,23 @@ public class Details extends AppCompatActivity
     //    if (number.charAt(0)!='0')
       //      return false;
 
-
-        //check that the new phone number is unique.
-        Cursor res = myDb.getPhones();
-        while (res.moveToNext())
+        Intent intent = getIntent();
+        String edit= intent.getStringExtra("edit");
+        if ((edit!=null)&&(edit.equals("true")))
         {
-            if (number.equals(res.getString(0)))
+            //do nothing.
+        }
+        else
+        {
+            //check that the new phone number is unique.
+            Cursor res = myDb.getPhones();
+            while (res.moveToNext())
             {
-                Toast.makeText(Details.this,"This number is already exists in the system.", Toast.LENGTH_SHORT ).show();
-                return false;
+                if (number.equals(res.getString(0)))
+                {
+                    Toast.makeText(Details.this,"This number is already exists in the system.", Toast.LENGTH_SHORT ).show();
+                    return false;
+                }
             }
         }
 

@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.maybethem.maybethem.DataBaseHelper;
 import com.maybethem.maybethem.Details;
+import com.maybethem.maybethem.DetailsWoman;
 import com.maybethem.maybethem.R;
 import com.maybethem.maybethem.friends.AbstractFriends;
 import com.maybethem.maybethem.friends.Friend;
@@ -209,7 +210,19 @@ public class CustomSwipeAdapter71 extends PagerAdapter
             @Override
             public void onClick(View v)
             {
-                Intent intent =new Intent(context,Details.class);
+
+                Intent intent ;
+
+                if (gender.equals("man"))
+                {
+                    intent =new Intent(context,Details.class);
+                }
+                else
+                {
+                    intent =new Intent(context,DetailsWoman.class);
+
+                }
+
                 intent.putExtra("edit", "true");
                 intent.putExtra("fullName", friend.getFirstName());
                 intent.putExtra("phoneNumber", friend.getPhoneNumber());
@@ -217,7 +230,7 @@ public class CustomSwipeAdapter71 extends PagerAdapter
                 System.out.println("age: "+friend.getAge());
 
                 context.startActivity(intent);
-             //   ((Activity)context).finish();
+                ((Activity)context).finish();
             }
         });
     }

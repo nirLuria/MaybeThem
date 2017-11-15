@@ -32,7 +32,7 @@ public class DetailsWoman extends Details
         hobbiesOnClickListener();
         callContactsList();
         submit();
-
+        edit();
     }
 
     public void setAnnonimousImage()
