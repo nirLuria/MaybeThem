@@ -71,7 +71,7 @@ public class Details extends AppCompatActivity
     EditText inputHobbies;
     String otherHobbies, hobbiesItems;
     boolean otherHobbiesIsChecked=false;
-    final int HOBBIES_OTHER_INDEX=6;
+    final int OTHER_HOBBIES_INDEX=6;
     Button mHobbies;
     TextView mHobbiesItemSelected;
     String[] hobbiesListItems;
@@ -125,22 +125,12 @@ public class Details extends AppCompatActivity
 
     private void printTest()
     {
-
-
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
         exec.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run()
             {
                 System.out.println("hobbiesItems: "+hobbiesItems);
-
-          /*      System.out.println("hobbiesItems: "+hobbiesItems);
-                System.out.println("mHobbiesItemSelected: "+mHobbiesItemSelected.toString());
-                System.out.println("hobbiesListItems: "+hobbiesListItems[0]+hobbiesListItems[1]);
-                System.out.println("mHobbiesUserItems: "+mHobbiesUserItems);
-*/
-
-
             }
         }, 0, 3, TimeUnit.SECONDS);
 
@@ -168,8 +158,16 @@ public class Details extends AppCompatActivity
             inputRedLine.setText(intent.getStringExtra("redLine"));
 
             hobbiesItems=intent.getStringExtra("hobbiesItems");
-            System.out.println("hobbiesItems12345: "+hobbiesItems);
             markHobbiesCheckedItems(hobbiesItems);
+
+            otherHobbies=intent.getStringExtra("otherHobbies");
+            if (!intent.getStringExtra("otherHobbies").equals(""))
+            {
+                otherHobbiesIsChecked=true;
+                hobbiesCheckedItems[OTHER_HOBBIES_INDEX]=true;
+                mHobbiesUserItems.add(OTHER_HOBBIES_INDEX);
+
+            }
         }
     }
 
@@ -181,6 +179,7 @@ public class Details extends AppCompatActivity
             {
                 hobbiesCheckedItems[i]=true;
                 mHobbiesUserItems.add(i);
+
             }
         }
     }
@@ -452,7 +451,7 @@ public class Details extends AppCompatActivity
                                 mHobbiesUserItems.add(position);
                             }
                             //handle "else".
-                            if (position==HOBBIES_OTHER_INDEX)
+                            if (position==OTHER_HOBBIES_INDEX)
                             {
                                 addOtherHobbies();
                                 otherHobbiesIsChecked=true;
@@ -463,9 +462,10 @@ public class Details extends AppCompatActivity
                         {
                             System.out.println("position is "+position);
                             mHobbiesUserItems.remove(new Integer(position));
-                            if (position==HOBBIES_OTHER_INDEX)
+                            if (position==OTHER_HOBBIES_INDEX)
                             {
                                 otherHobbiesIsChecked=false;
+                                System.out.println("otherHobbiesIsChecked is: "+otherHobbiesIsChecked);
                             }
                         }
                     }
@@ -699,6 +699,7 @@ public class Details extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+                System.out.println("12234otherHobbiesIsChecked IS: "+otherHobbiesIsChecked);
 
                // radioGroup= (RadioGroup) findViewById(R.id.gender_radio_group);
                // int selected_id=radioGroup.getCheckedRadioButtonId();
@@ -743,6 +744,7 @@ public class Details extends AppCompatActivity
                     else
                     {
                         hobbies=hobbiesItems;
+                        otherHobbies="";
                     }
                     if (otherRedLineIsChecked)
                     {
@@ -770,7 +772,8 @@ public class Details extends AppCompatActivity
 
                         //add again.
 
-                        boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)), hobbiesItems);
+                        boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)),
+                                hobbiesItems, otherHobbies);
                         if (isInserted==true)
                         {
                             Toast.makeText(Details.this, gender+", "+firstName+", "+phoneNumber+" changed successfully", Toast.LENGTH_SHORT ).show();
@@ -797,7 +800,8 @@ public class Details extends AppCompatActivity
                     }
                     else
                     {
-                        boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)), hobbiesItems);
+                        boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)),
+                                hobbiesItems, otherHobbies);
                         if (isInserted==true)
                         {
                             Toast.makeText(Details.this, gender+", "+firstName+", "+phoneNumber+" added successfully", Toast.LENGTH_SHORT ).show();

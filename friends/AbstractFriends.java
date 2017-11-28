@@ -87,9 +87,11 @@ public abstract class AbstractFriends extends FragmentActivity
                 String redLine=res.getString(5);
                 byte[] image=res.getBlob(6);
                 String hobbiesItems=res.getString(7);
+                String otherHobbies=res.getString(8);
 
 
-                Friend f = new Friend( firstName, age,   phoneNumber,  gender,  hobbies,  redLine, image, hobbiesItems);
+                Friend f = new Friend( firstName, age,   phoneNumber,  gender,  hobbies,  redLine, image,
+                        hobbiesItems, otherHobbies);
                 arrayList.add(f);
 
 

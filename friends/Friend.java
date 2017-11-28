@@ -16,8 +16,11 @@ public class Friend
     String redLine;
     byte[] image;
     String hobbiesItems;
+    String otherHobbies;
 
-    public Friend(String firstNsame, int age, String phoneNumber, String gender, String hobbies, String redLine, byte[] image, String hobbiesItems)
+
+    public Friend(String firstNsame, int age, String phoneNumber, String gender, String hobbies, String redLine, byte[] image,
+                  String hobbiesItems, String otherHobbies)
     {
         this.firstNsame = firstNsame;
    //     this.lastName = lastName;
@@ -28,7 +31,7 @@ public class Friend
         this.redLine = redLine;
         this.image = image;
         this.hobbiesItems = hobbiesItems;
-
+        this.otherHobbies= otherHobbies;
     }
 
     public String getFirstName() {
@@ -90,6 +93,14 @@ public class Friend
 
     public void setHobbiesItems(String hobbiesItems) {
         this.hobbiesItems = hobbiesItems;
+    }
+
+    public String getOtherHobbies() {
+        return otherHobbies;
+    }
+
+    public void setOtherHobbies(String otherHobbies) {
+        this.otherHobbies = otherHobbies;
     }
 
 
