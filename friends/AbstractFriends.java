@@ -61,8 +61,16 @@ public abstract class AbstractFriends extends FragmentActivity
         Cursor res = myDb.getFriends(myGender);
         if (res.getCount()==0)
         {
-            System.out.println(" no friends");
-            Toast.makeText(AbstractFriends.this,"No friends", Toast.LENGTH_SHORT ).show();
+            if(myGender.equals("man"))
+            {
+                Toast.makeText(AbstractFriends.this,"אין בנים במאגר", Toast.LENGTH_SHORT ).show();
+            }
+            else
+            {
+                Toast.makeText(AbstractFriends.this,"אין בנות במאגר", Toast.LENGTH_SHORT ).show();
+
+            }
+
 
             return arrayList;
         }
@@ -78,9 +86,10 @@ public abstract class AbstractFriends extends FragmentActivity
                 String hobbies=res.getString(4);
                 String redLine=res.getString(5);
                 byte[] image=res.getBlob(6);
+                String hobbiesItems=res.getString(7);
 
 
-                Friend f = new Friend( firstName, age,   phoneNumber,  gender,  hobbies,  redLine, image);
+                Friend f = new Friend( firstName, age,   phoneNumber,  gender,  hobbies,  redLine, image, hobbiesItems);
                 arrayList.add(f);
 
 

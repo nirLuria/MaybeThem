@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -38,6 +39,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static java.io.FileDescriptor.out;
 
@@ -115,6 +119,31 @@ public class Details extends AppCompatActivity
 
 
         edit();
+
+  //      printTest();
+    }
+
+    private void printTest()
+    {
+
+
+        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+        exec.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run()
+            {
+                System.out.println("hobbiesItems: "+hobbiesItems);
+
+          /*      System.out.println("hobbiesItems: "+hobbiesItems);
+                System.out.println("mHobbiesItemSelected: "+mHobbiesItemSelected.toString());
+                System.out.println("hobbiesListItems: "+hobbiesListItems[0]+hobbiesListItems[1]);
+                System.out.println("mHobbiesUserItems: "+mHobbiesUserItems);
+*/
+
+
+            }
+        }, 0, 3, TimeUnit.SECONDS);
+
     }
 
 
@@ -131,7 +160,28 @@ public class Details extends AppCompatActivity
             oldPhoneNumber=intent.getStringExtra("phoneNumber");
             ageET.setText(""+intent.getIntExtra("age",0));
 
+            inputHobbies= new EditText(this);
+            System.out.println("intent is: "+intent.getStringExtra("hobbies"));
+            inputHobbies.setText(intent.getStringExtra("hobbies"));
 
+            inputRedLine= new EditText(this);
+            inputRedLine.setText(intent.getStringExtra("redLine"));
+
+            hobbiesItems=intent.getStringExtra("hobbiesItems");
+            System.out.println("hobbiesItems12345: "+hobbiesItems);
+            markHobbiesCheckedItems(hobbiesItems);
+        }
+    }
+
+    private void markHobbiesCheckedItems(String hobbiesItems)
+    {
+        for (int i=0; i<hobbiesListItems.length; i++)
+        {
+            if (hobbiesItems.contains(hobbiesListItems[i]))
+            {
+                hobbiesCheckedItems[i]=true;
+                mHobbiesUserItems.add(i);
+            }
         }
     }
 
@@ -702,11 +752,14 @@ public class Details extends AppCompatActivity
                     {
                         redLine=redLineItems;
                     }
+                    System.out.println("hobbiesItems66: "+hobbiesItems);
 
-                    clearAllHobbies();
-                    clearAllRedLines();
+
+
 
                     //String gender=radio_choose.getText().toString();
+
+
 
                     Intent intent = getIntent();
                     String edit= intent.getStringExtra("edit");
@@ -716,7 +769,8 @@ public class Details extends AppCompatActivity
                         myDb.deleteFriend(oldPhoneNumber);
 
                         //add again.
-                        boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)));
+
+                        boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)), hobbiesItems);
                         if (isInserted==true)
                         {
                             Toast.makeText(Details.this, gender+", "+firstName+", "+phoneNumber+" changed successfully", Toast.LENGTH_SHORT ).show();
@@ -743,7 +797,7 @@ public class Details extends AppCompatActivity
                     }
                     else
                     {
-                        boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)));
+                        boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)), hobbiesItems);
                         if (isInserted==true)
                         {
                             Toast.makeText(Details.this, gender+", "+firstName+", "+phoneNumber+" added successfully", Toast.LENGTH_SHORT ).show();
@@ -763,7 +817,8 @@ public class Details extends AppCompatActivity
                     }
 
 
-
+                    clearAllHobbies();
+                    clearAllRedLines();
                 }
             }
         });

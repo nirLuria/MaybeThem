@@ -133,9 +133,10 @@ public class Pair extends AppCompatActivity
         String hobbies=res.getString(4);
         String redLine=res.getString(5);
         byte[] image=res.getBlob(6);
+        String hobbiesItems=res.getString(7);
 
 
-        Friend f = new Friend( firstName, age,   phoneNumber,  gender,  hobbies,  redLine, image);
+        Friend f = new Friend( firstName, age,   phoneNumber,  gender,  hobbies,  redLine, image, hobbiesItems );
 
         return f;
     }

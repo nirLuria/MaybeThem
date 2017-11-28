@@ -26,6 +26,8 @@ public class DataBaseHelper extends SQLiteOpenHelper
     public static final String col5= "HOBBIES";
     public static final String col6= "RED_LINE";
     public static final String col7= "IMAGE";
+    public static final String col8= "HOBBIES_ITEMS";
+
 
 
     public DataBaseHelper(Context context)
@@ -37,7 +39,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        db.execSQL("Create table "+ TableFriends +" (FIRST_NAME TEXT , AGE INTEGER, PHONE_NUMBER TEXT PRIMARY KEY, GENDER TEXT, HOBBIES TEXT, RED_LINE TEXT,  image BLOG ) ");
+        db.execSQL("Create table "+ TableFriends +" (FIRST_NAME TEXT , AGE INTEGER, PHONE_NUMBER TEXT PRIMARY KEY, GENDER TEXT, HOBBIES TEXT, RED_LINE TEXT,  image BLOG , HOBBIES_ITEMS TEXT) ");
         System.out.println("created clean database");
     }
 
@@ -51,8 +53,12 @@ public class DataBaseHelper extends SQLiteOpenHelper
 
     ///////////////////////////////////    WRITE    /////////////////////////////////
 
-    public boolean insertFriend (String firstName, String age, String phoneNumber, String gender, String hobbies, String redLine, byte[] image)
+    public boolean insertFriend (String firstName, String age, String phoneNumber, String gender, String hobbies, String redLine, byte[] image, String hobbiesItems)
     {
+    //    System.out.println("hobbiesItems: "+hobbiesItems);
+
+
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(col1, firstName);
@@ -70,8 +76,9 @@ public class DataBaseHelper extends SQLiteOpenHelper
         contentValues.put(col5, hobbies);
         contentValues.put(col6, redLine);
         contentValues.put(col7, image);
+        contentValues.put(col8, hobbiesItems);
 
-        System.out.println("image is "+image);
+
 
         long result = db.insert(TableFriends, null, contentValues);
         if (result==-1)

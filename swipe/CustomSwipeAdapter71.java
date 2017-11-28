@@ -149,8 +149,9 @@ public class CustomSwipeAdapter71 extends PagerAdapter
                 String hobbies=res.getString(4);
                 String redLine=res.getString(5);
                 byte[] image = res.getBlob(6);
+                String hobbiesItems=res.getString(7);
 
-                Friend f = new Friend( firstName, age,  phoneNumber,  gender,  hobbies,  redLine, image);
+                Friend f = new Friend( firstName, age,  phoneNumber,  gender,  hobbies,  redLine, image, hobbiesItems);
                 arrayList.add(f);
 
 
@@ -227,6 +228,12 @@ public class CustomSwipeAdapter71 extends PagerAdapter
                 intent.putExtra("fullName", friend.getFirstName());
                 intent.putExtra("phoneNumber", friend.getPhoneNumber());
                 intent.putExtra("age", friend.getAge());
+                intent.putExtra("gender", friend.getGender());
+                intent.putExtra("hobbies", friend.getHobbies());
+                intent.putExtra("redLine", friend.getRedLine());
+                intent.putExtra("hobbiesItems", friend.getHobbiesItems());
+
+
                 System.out.println("age: "+friend.getAge());
 
                 context.startActivity(intent);
