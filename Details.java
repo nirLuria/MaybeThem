@@ -96,7 +96,7 @@ public class Details extends AppCompatActivity
     Button btnChoose;
     private static final int PICK_IMAGE = 100;
     Uri imageUri;
-
+    byte[] image;
 
 
 
@@ -158,7 +158,10 @@ public class Details extends AppCompatActivity
             inputRedLine.setText(intent.getStringExtra("redLine"));
 
             hobbiesItems=intent.getStringExtra("hobbiesItems");
-            markHobbiesCheckedItems(hobbiesItems);
+            if (hobbiesItems!=null)
+            {
+                markHobbiesCheckedItems(hobbiesItems);
+            }
 
             otherHobbies=intent.getStringExtra("otherHobbies");
             if (!intent.getStringExtra("otherHobbies").equals(""))
@@ -168,11 +171,20 @@ public class Details extends AppCompatActivity
                 mHobbiesUserItems.add(OTHER_HOBBIES_INDEX);
 
             }
+
+            image=intent.getByteArrayExtra("image");
+            setFriendImage(image);
         }
+
+
+
     }
 
     private void markHobbiesCheckedItems(String hobbiesItems)
     {
+        //System.out.println("hobbiesItems is : "+hobbiesItems);
+        //System.out.println("hobbiesListItems length is : "+hobbiesListItems.length);
+
         for (int i=0; i<hobbiesListItems.length; i++)
         {
             if (hobbiesItems.contains(hobbiesListItems[i]))
@@ -213,6 +225,8 @@ public class Details extends AppCompatActivity
                 openGallery();
             }
         });
+
+        image=null;
     }
 
 
@@ -229,6 +243,17 @@ public class Details extends AppCompatActivity
     public void setFriendImage(Uri imageUri)
     {
         imageView.setImageURI(imageUri);
+        imageView.getLayoutParams().height = imageHeight;
+        imageView.getLayoutParams().width = imageWidth;
+    }
+
+
+    public void setFriendImage(byte[] imageByte)
+    {
+        //convert byte[] to bitmap.
+        Bitmap b = BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length);
+
+        imageView.setImageBitmap(b);
         imageView.getLayoutParams().height = imageHeight;
         imageView.getLayoutParams().width = imageWidth;
     }
@@ -754,14 +779,12 @@ public class Details extends AppCompatActivity
                     {
                         redLine=redLineItems;
                     }
-                    System.out.println("hobbiesItems66: "+hobbiesItems);
 
-
-
-
-                    //String gender=radio_choose.getText().toString();
-
-
+                    //set image for db.
+                 //   if (image==null)
+                    {
+                        image=(imageViewToBite(imageView));
+                    }
 
                     Intent intent = getIntent();
                     String edit= intent.getStringExtra("edit");
@@ -772,7 +795,7 @@ public class Details extends AppCompatActivity
 
                         //add again.
 
-                        boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)),
+                        boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, image,
                                 hobbiesItems, otherHobbies);
                         if (isInserted==true)
                         {
@@ -800,7 +823,7 @@ public class Details extends AppCompatActivity
                     }
                     else
                     {
-                        boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, (imageViewToBite(imageView)),
+                        boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, image,
                                 hobbiesItems, otherHobbies);
                         if (isInserted==true)
                         {
