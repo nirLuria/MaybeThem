@@ -120,7 +120,7 @@ public class Details extends AppCompatActivity
 
         edit();
 
-  //      printTest();
+//        printTest();
     }
 
     private void printTest()
@@ -130,7 +130,7 @@ public class Details extends AppCompatActivity
             @Override
             public void run()
             {
-                System.out.println("hobbiesItems: "+hobbiesItems);
+                System.out.println("redLineItems IS: "+redLineItems);
             }
         }, 0, 3, TimeUnit.SECONDS);
 
@@ -150,13 +150,15 @@ public class Details extends AppCompatActivity
             oldPhoneNumber=intent.getStringExtra("phoneNumber");
             ageET.setText(""+intent.getIntExtra("age",0));
 
+
             inputHobbies= new EditText(this);
-            System.out.println("intent is: "+intent.getStringExtra("hobbies"));
             inputHobbies.setText(intent.getStringExtra("hobbies"));
 
             inputRedLine= new EditText(this);
             inputRedLine.setText(intent.getStringExtra("redLine"));
 
+
+            //hobbies.
             hobbiesItems=intent.getStringExtra("hobbiesItems");
             if (hobbiesItems!=null)
             {
@@ -172,6 +174,24 @@ public class Details extends AppCompatActivity
 
             }
 
+            //red line.
+            redLineItems=intent.getStringExtra("redLineItems");
+            if (redLineItems!=null)
+            {
+                markRedLineCheckedItems(redLineItems);
+            }
+
+            otherRedLine=intent.getStringExtra("otherRedLine");
+            if (!intent.getStringExtra("otherRedLine").equals(""))
+            {
+                otherRedLineIsChecked=true;
+                redLineCheckedItems[RED_LINE_OTHER_INDEX]=true;
+                mRedLineUserItems.add(RED_LINE_OTHER_INDEX);
+
+            }
+
+
+
             image=intent.getByteArrayExtra("image");
             setFriendImage(image);
         }
@@ -182,8 +202,9 @@ public class Details extends AppCompatActivity
 
     private void markHobbiesCheckedItems(String hobbiesItems)
     {
-        //System.out.println("hobbiesItems is : "+hobbiesItems);
-        //System.out.println("hobbiesListItems length is : "+hobbiesListItems.length);
+        System.out.println("hobbiesItems is : "+hobbiesItems);
+        System.out.println("hobbiesListItems length is : "+hobbiesListItems.length);
+
 
         for (int i=0; i<hobbiesListItems.length; i++)
         {
@@ -191,6 +212,22 @@ public class Details extends AppCompatActivity
             {
                 hobbiesCheckedItems[i]=true;
                 mHobbiesUserItems.add(i);
+
+            }
+        }
+    }
+
+    private void markRedLineCheckedItems(String redLineItems)
+    {
+        System.out.println("redLineItems is : "+redLineItems);
+        System.out.println("redLineListItems length is : "+redLineListItems.length);
+
+        for (int i=0; i<redLineListItems.length; i++)
+        {
+            if (redLineItems.contains(redLineListItems[i]))
+            {
+                redLineCheckedItems[i]=true;
+                mRedLineUserItems.add(i);
 
             }
         }
@@ -717,6 +754,7 @@ public class Details extends AppCompatActivity
 
     public void submit()
     {
+        System.out.println("submit: "+hobbiesItems+", "+ otherHobbies+", "+  redLineItems+", "+  otherRedLine);
 
         submit= (Button) findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener()
@@ -724,7 +762,6 @@ public class Details extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                System.out.println("12234otherHobbiesIsChecked IS: "+otherHobbiesIsChecked);
 
                // radioGroup= (RadioGroup) findViewById(R.id.gender_radio_group);
                // int selected_id=radioGroup.getCheckedRadioButtonId();
@@ -778,6 +815,8 @@ public class Details extends AppCompatActivity
                     else
                     {
                         redLine=redLineItems;
+                        otherRedLine="";
+
                     }
 
                     //set image for db.
@@ -796,7 +835,7 @@ public class Details extends AppCompatActivity
                         //add again.
 
                         boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, image,
-                                hobbiesItems, otherHobbies);
+                                hobbiesItems, otherHobbies, redLineItems, otherRedLine);
                         if (isInserted==true)
                         {
                             Toast.makeText(Details.this, gender+", "+firstName+", "+phoneNumber+" changed successfully", Toast.LENGTH_SHORT ).show();
@@ -823,8 +862,9 @@ public class Details extends AppCompatActivity
                     }
                     else
                     {
+                        System.out.println("shalom: "+hobbiesItems+", "+ otherHobbies+", "+  redLineItems+", "+  otherRedLine);
                         boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, image,
-                                hobbiesItems, otherHobbies);
+                                hobbiesItems, otherHobbies, redLineItems, otherRedLine);
                         if (isInserted==true)
                         {
                             Toast.makeText(Details.this, gender+", "+firstName+", "+phoneNumber+" added successfully", Toast.LENGTH_SHORT ).show();
