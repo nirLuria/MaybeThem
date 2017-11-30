@@ -244,7 +244,6 @@ public class CustomSwipeAdapter71 extends PagerAdapter
                 intent.putExtra("image", friend.getImage());
 
 
-                System.out.println("age: "+friend.getAge());
 
                 context.startActivity(intent);
                 ((Activity)context).finish();

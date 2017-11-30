@@ -26,16 +26,15 @@ public class Women extends AbstractFriends
         Intent intent = getIntent();
         int position= intent.getIntExtra("position", 0);
         if (position<0)
+        {
             position=0;
+        }
 
         viewPager = (ViewPager)findViewById(R.id.viewPager);
         adapter = new CustomSwipeAdapter71(this, myDb, "woman");
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(position);
 
-
-        //title=(TextView) findViewById(R.id.title);
-        //title.setText("girls");
 
         print("woman");
 

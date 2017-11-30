@@ -39,6 +39,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -65,6 +68,8 @@ public class Details extends AppCompatActivity
     public final static int PICK_CONTACT = 1;
     public final static int imageHeight = 80;
     public final static int imageWidth = 140;
+
+    int count=0;
 
 
     //hobbies variables.
@@ -116,19 +121,25 @@ public class Details extends AppCompatActivity
 
         edit();
 
-     //   printTest();
+    //    printTest();
     }
 
 
 
     public void printTest()
     {
+
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
         exec.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run()
             {
-                System.out.println("hobbiesItems IS: "+hobbiesItems);
+                System.out.println("mHobbiesUserCHoose  : ");
+                for(int i=0; i<mHobbiesUserCHoose.size(); i++)
+                {
+                    System.out.print(mHobbiesUserCHoose.get(i)+",");
+                }
+                System.out.println("");
             }
         }, 0, 3, TimeUnit.SECONDS);
 
@@ -137,6 +148,9 @@ public class Details extends AppCompatActivity
 
     public void initialize()
     {
+
+
+
         firstNameET = (EditText)findViewById(R.id.add_first_name);
        // lastNameET = (EditText)findViewById(R.id.add_last_name);
         ageET = (EditText)findViewById(R.id.add_age);
@@ -243,6 +257,7 @@ public class Details extends AppCompatActivity
                         image=(imageViewToBite(imageView));
                     }
 
+
                     Intent intent = getIntent();
                     String edit= intent.getStringExtra("edit");
                     if ((edit!=null)&&(edit.equals("true")))
@@ -311,6 +326,7 @@ public class Details extends AppCompatActivity
     ///////////////////////////////////////     hobbies functions  ///////////////////////////////////////
     public void hobbiesOnClickListener()
     {
+
         hobbiesGeneralList= getResources().getStringArray(R.array.hobbies_item);
         hobbiesCheckedItems = new boolean[hobbiesGeneralList.length];
         hobbiesBtn.setOnClickListener(new View.OnClickListener() {
@@ -327,7 +343,12 @@ public class Details extends AppCompatActivity
                         {
                             if (!mHobbiesUserCHoose.contains(position))
                             {
+
+
+
                                 mHobbiesUserCHoose.add(position);
+
+
                             }
                             //handle "else".
                             if (position==HOBBIES_OTHER_INDEX)
@@ -339,7 +360,13 @@ public class Details extends AppCompatActivity
                         }
                         else if (mHobbiesUserCHoose.contains(position))
                         {
+
+
+
                             mHobbiesUserCHoose.remove(new Integer(position));
+
+
+
                             if (position==HOBBIES_OTHER_INDEX)
                             {
                                 otherHobbiesIsChecked=false;
@@ -368,6 +395,7 @@ public class Details extends AppCompatActivity
                             }
 
                         }
+
                         hobbiesItems=item;
 
                         //close the keyboard.
@@ -617,7 +645,7 @@ public class Details extends AppCompatActivity
 
             //hobbies.
             hobbiesItems=intent.getStringExtra("hobbiesItems");
-            if (hobbiesItems!=null)
+            if ((hobbiesItems!=null))
             {
                 markHobbiesCheckedItems(hobbiesItems);
             }
@@ -654,14 +682,19 @@ public class Details extends AppCompatActivity
         }
     }
 
+
     public void markHobbiesCheckedItems(String hobbiesItems)
     {
+
         for (int i=0; i<hobbiesGeneralList.length; i++)
         {
             if (hobbiesItems.contains(hobbiesGeneralList[i]))
             {
                 hobbiesCheckedItems[i]=true;
-                mHobbiesUserCHoose.add(i);
+                if (!mHobbiesUserCHoose.contains(i))
+                {
+                    mHobbiesUserCHoose.add(i);
+                }
             }
         }
     }
@@ -673,7 +706,10 @@ public class Details extends AppCompatActivity
             if (redLineItems.contains(redLineGeneralList[i]))
             {
                 redLineCheckedItems[i]=true;
-                mRedLineUserChoose.add(i);
+                if (!mRedLineUserChoose.contains(i))
+                {
+                    mRedLineUserChoose.add(i);
+                }
             }
         }
     }
