@@ -66,8 +66,8 @@ public class Details extends AppCompatActivity
     String oldPhoneNumber;
 
     public final static int PICK_CONTACT = 1;
-    public final static int imageHeight = 80;
-    public final static int imageWidth = 140;
+    public final static int imageHeight = 333;
+    public final static int imageWidth = 333;
 
     int count=0;
 
@@ -97,7 +97,7 @@ public class Details extends AppCompatActivity
 
     //image variables.
     ImageView imageView;
-    Button btnChoose;
+    ImageView btnChoose;
     public static final int PICK_IMAGE = 100;
     Uri imageUri;
     byte[] image;
@@ -164,7 +164,9 @@ public class Details extends AppCompatActivity
         hobbiesBtn = (Button)findViewById(R.id.btnHobbies);
         redLineBtn = (Button)findViewById(R.id.btnRedLine);
 
-        btnChoose=(Button)findViewById(R.id.btnChoose);
+      //  btnChoose=(Button)findViewById(R.id.btnChoose);
+        btnChoose=(ImageView)findViewById(R.id.imageView);
+
         imageView=(ImageView)findViewById(R.id.imageView);
 
         //hide the image.
