@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +65,7 @@ public abstract class AbstractFriends extends FragmentActivity
             if(myGender.equals("man"))
             {
                 Toast.makeText(AbstractFriends.this,"אין בנים במאגר", Toast.LENGTH_SHORT ).show();
+
             }
             else
             {
@@ -71,6 +73,9 @@ public abstract class AbstractFriends extends FragmentActivity
 
             }
 
+            //set background image.
+            RelativeLayout layout =(RelativeLayout)findViewById(R.id.containerActivity);
+            layout.setBackgroundResource(R.drawable.no_friends);
 
             return arrayList;
         }

@@ -114,11 +114,14 @@ public class DataBaseHelper extends SQLiteOpenHelper
     public Cursor getFriends(String gender)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = ( "select * from "+TableFriends+" where GENDER='" + gender  + "'; " );
+      //  String query = ( "select * from "+TableFriends+" where GENDER='" + gender  + "'; " );
+        String query = ( "select * from "+TableFriends+" where GENDER='" + gender  + "' order by FIRST_NAME; " );
+
         Cursor res = db.rawQuery(query, null);
 
         return res;
     }
+
 
     public int getFriendsCount(String gender)
     {

@@ -274,7 +274,7 @@ public class Details extends AppCompatActivity
                                 hobbiesItems, otherHobbies, redLineItems, otherRedLine);
                         if (isInserted==true)
                         {
-                            Toast.makeText(Details.this, gender+", "+firstName+", "+phoneNumber+" changed successfully", Toast.LENGTH_SHORT ).show();
+                            Toast.makeText(Details.this, gender+", "+firstName+", "+phoneNumber+" שונה בהצלחה ", Toast.LENGTH_SHORT ).show();
                             finish();
 
                             Intent refresh;
@@ -299,7 +299,7 @@ public class Details extends AppCompatActivity
                                 hobbiesItems, otherHobbies, redLineItems, otherRedLine);
                         if (isInserted==true)
                         {
-                            Toast.makeText(Details.this, gender+", "+firstName+", "+phoneNumber+" added successfully", Toast.LENGTH_SHORT ).show();
+                            Toast.makeText(Details.this, gender+", "+firstName+", "+phoneNumber+" התווסף בהצלחה! ", Toast.LENGTH_SHORT ).show();
                             firstNameET.setText("");
                             //      lastNameET.setText("");
                             ageET.setText("");

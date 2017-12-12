@@ -161,7 +161,23 @@ public class CustomSwipeAdapter71 extends PagerAdapter
 
             }
         }
+
+
+        /*
+        Cursor res2 = myDb.test(myGender);
+        System.out.println("This is test-------------------------");
+        while (res2.moveToNext())
+        {
+            System.out.println("name is: "+res2.getString(0));
+
+        }
+        System.out.println("end of test-------------------------");
+
+*/
+
+
         return arrayList;
+
     }
 
 
