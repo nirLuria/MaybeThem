@@ -35,6 +35,8 @@ public class DetailsWoman extends Details
         hobbiesOnClickListener();
         callContactsList();
         submit();
+        back();
+
         edit();
 
 

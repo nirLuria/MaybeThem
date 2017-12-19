@@ -2,17 +2,21 @@ package com.maybethem.maybethem.swipe;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.view.PagerAdapter;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +45,11 @@ public class CustomSwipeAdapter71 extends PagerAdapter
     String gender;
     Button deleteFriend, editFriend;
 
+    //image size.
+    final int Height=550;
+    final int Width=550;
+
+
     public CustomSwipeAdapter71(Context context, DataBaseHelper myDb, String gender)
     {
         this.context=context;
@@ -58,7 +67,7 @@ public class CustomSwipeAdapter71 extends PagerAdapter
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return view==(LinearLayout)object;
+        return view==(RelativeLayout)object;
     }
 
 
@@ -71,6 +80,7 @@ public class CustomSwipeAdapter71 extends PagerAdapter
         TextView textViewFirstName = (TextView)itemView.findViewById(R.id.first_name);
         TextView textViewAge = (TextView)itemView.findViewById(R.id.age);
         TextView textViewNumber = (TextView)itemView.findViewById(R.id.number);
+
         TextView textViewHobbies = (TextView)itemView.findViewById(R.id.hobbies);
         TextView textViewRedLine = (TextView)itemView.findViewById(R.id.red_line);
 
@@ -95,8 +105,8 @@ public class CustomSwipeAdapter71 extends PagerAdapter
         friend.printImage();
         Bitmap bitmap = BitmapFactory.decodeByteArray(foodImage, 0, foodImage.length);
         imageView.setImageBitmap(bitmap);
-        imageView.getLayoutParams().height = 180;
-        imageView.getLayoutParams().width = 240;
+        imageView.getLayoutParams().height = Height;
+        imageView.getLayoutParams().width = Width;
         ///
 
 
@@ -122,7 +132,7 @@ public class CustomSwipeAdapter71 extends PagerAdapter
     @Override
     public void destroyItem(ViewGroup container, int position, Object object)
     {
-        container.removeView((LinearLayout)object);
+        container.removeView((RelativeLayout)object);
     }
 
 
@@ -183,40 +193,58 @@ public class CustomSwipeAdapter71 extends PagerAdapter
 
     public void deleteFriend(final Friend friend, final int position)
     {
-
-
         deleteFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                if (myDb.deleteFriend(friend.getPhoneNumber()))
-                {
-                    System.out.println("i deleted you "+ friend.getPhoneNumber());
-                    Intent intent;
-                    if (gender.equals("man"))
-                    {
-                        intent = new Intent(context,Men.class);
 
-                    }
-                    else
-                    {
-                        intent = new Intent(context,Women.class);
+                AlertDialog.Builder alert_builder = new AlertDialog.Builder(context);
+                alert_builder.setMessage("האם אתה בטוח שברצונך למחוק את "+friend.getFirstName()+"?")
+                        .setCancelable(false)
+                        .setNegativeButton("ממש לא", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        })
+                        .setPositiveButton("בטח", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i)
+                            {
+                                if (myDb.deleteFriend(friend.getPhoneNumber()))
+                                {
+                                    System.out.println("i deleted you "+ friend.getPhoneNumber());
+                                    Intent intent;
+                                    if (gender.equals("man"))
+                                    {
+                                        intent = new Intent(context,Men.class);
 
-                    }
+                                    }
+                                    else
+                                    {
+                                        intent = new Intent(context,Women.class);
+
+                                    }
 
 
-                    intent.putExtra("position", position-1);
-                    System.out.println("This is  position  "+ position);
+                                    intent.putExtra("position", position-1);
+                                    System.out.println("This is  position  "+ position);
 
-                    context.startActivity(intent);
-                    ((Activity)context).finish();
+                                    context.startActivity(intent);
+                                    ((Activity)context).finish();
 
 
-                }
-                else
-                {
-                    System.out.println("i can't delete "+ friend.getPhoneNumber());
-                }
+                                }
+                                else
+                                {
+                                    System.out.println("i can't delete "+ friend.getPhoneNumber());
+                                }
+                            }
+                        });
+                AlertDialog alert = alert_builder.create();
+                alert.setTitle("");
+                alert.show();
+
             }
         });
     }

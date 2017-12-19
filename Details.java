@@ -74,7 +74,7 @@ public class Details extends AppCompatActivity
 
     //hobbies variables.
     EditText inputHobbies;
-    Button hobbiesBtn;
+    Button hobbiesBtn, backButton;
     String[] hobbiesGeneralList;
     ArrayList<Integer> mHobbiesUserCHoose = new ArrayList<>();
     boolean[] hobbiesCheckedItems;
@@ -117,11 +117,13 @@ public class Details extends AppCompatActivity
         hobbiesOnClickListener();
         callContactsList();
         submit();
-
+        back();
 
         edit();
 
     //    printTest();
+
+
     }
 
 
@@ -148,9 +150,6 @@ public class Details extends AppCompatActivity
 
     public void initialize()
     {
-
-
-
         firstNameET = (EditText)findViewById(R.id.add_first_name);
        // lastNameET = (EditText)findViewById(R.id.add_last_name);
         ageET = (EditText)findViewById(R.id.add_age);
@@ -160,6 +159,8 @@ public class Details extends AppCompatActivity
 
 
         contact= (Button)findViewById(R.id.contactListSearch);
+
+        backButton = (Button)findViewById(R.id.back);
 
         hobbiesBtn = (Button)findViewById(R.id.btnHobbies);
         redLineBtn = (Button)findViewById(R.id.btnRedLine);
@@ -183,7 +184,6 @@ public class Details extends AppCompatActivity
 
         image=null;
     }
-
 
 
     public void submit()
@@ -259,6 +259,9 @@ public class Details extends AppCompatActivity
                         image=(imageViewToBite(imageView));
                     }
 
+                    phoneNumber=fixPhoneNumber(phoneNumber);
+
+
 
                     Intent intent = getIntent();
                     String edit= intent.getStringExtra("edit");
@@ -268,8 +271,6 @@ public class Details extends AppCompatActivity
                         myDb.deleteFriend(oldPhoneNumber);
 
                         //add again.
-
-
                         boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, image,
                                 hobbiesItems, otherHobbies, redLineItems, otherRedLine);
                         if (isInserted==true)
@@ -293,6 +294,8 @@ public class Details extends AppCompatActivity
                             Toast.makeText(Details.this,"קרתה בעיה בהוספת חבר חדש", Toast.LENGTH_SHORT ).show();
                         }
                     }
+
+                    //new friend.
                     else
                     {
                         boolean isInserted = myDb.insertFriend(firstName, age,  phoneNumber, gender, hobbies, redLine, image,
@@ -328,10 +331,10 @@ public class Details extends AppCompatActivity
     ///////////////////////////////////////     hobbies functions  ///////////////////////////////////////
     public void hobbiesOnClickListener()
     {
-
         hobbiesGeneralList= getResources().getStringArray(R.array.hobbies_item);
         hobbiesCheckedItems = new boolean[hobbiesGeneralList.length];
-        hobbiesBtn.setOnClickListener(new View.OnClickListener() {
+        hobbiesBtn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(Details.this);
@@ -480,6 +483,22 @@ public class Details extends AppCompatActivity
         }
         otherHobbies="";
     }
+
+
+
+    public void back()
+    {
+        backButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                finish();
+            }
+        });
+    }
+
+
 
     ///////////////////////////////////////     red line functions  ///////////////////////////////////////
     public void redLineOnClickListener()
@@ -718,7 +737,21 @@ public class Details extends AppCompatActivity
 
 
     ///////////////////////////////////////     check input functions  ///////////////////////////////////////
-    public boolean checkName(String firstName)
+    public String fixPhoneNumber(String number)
+    {
+        String ret="";
+
+        if ((number.charAt(0)=='+') && (number.charAt(1)=='9') && (number.charAt(2)=='7') && (number.charAt(3)=='2'))
+        {
+            ret="0";
+            ret+= number.substring(4,number.length());
+            return ret;
+
+        }
+        return number;
+    }
+
+    public boolean checkName(String firstName)  
     {
 
         if (firstName==null)

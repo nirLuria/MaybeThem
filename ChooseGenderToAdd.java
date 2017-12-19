@@ -15,6 +15,7 @@ import android.widget.RadioGroup;
 public class ChooseGenderToAdd extends AppCompatActivity
 {
     RadioButton man, woman;
+    Button back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class ChooseGenderToAdd extends AppCompatActivity
 
         manClickListener();
         womanClickListener();
-
+        back();
 
     }
 
@@ -66,5 +67,18 @@ public class ChooseGenderToAdd extends AppCompatActivity
     }
 
 
+    public void back()
+    {
+        back= (Button)findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                finish();
+            }
+        });
+    }
 
 }
